@@ -1,0 +1,11 @@
+{
+  "extends": [
+    "plugin:adonis/typescriptApp"
+  ],
+  "rules": {
+    "@typescript-eslint/semi": [
+      2,
+      "always"
+    ]
+  }
+}
