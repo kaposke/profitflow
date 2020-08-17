@@ -7,13 +7,14 @@ export default class UserStoreValidator {
 
   public schema = schema.create({
     username: schema.string({}, [
+      rules.unique({ table: 'users', column: 'username', caseInsensitive: true }),
       rules.alpha(),
       rules.maxLength(255),
     ]),
     email: schema.string({}, [
       rules.maxLength(255),
       rules.email(),
-      rules.unique({ table: 'users', column: 'email' }),
+      rules.unique({ table: 'users', column: 'email', caseInsensitive: true }),
     ]),
     password: schema.string({}, [
       rules.minLength(8),
@@ -33,5 +34,13 @@ export default class UserStoreValidator {
    *   'scores.*.number': 'Define scores as valid numbers'
    * }
   */
-  public messages = {};
+  public messages = {
+    'username.required': 'Username is required',
+    'username.unique': 'This username is already registered',
+    'email.required': 'E-mail is required',
+    'email.unique': 'This e-mail is already registered',
+    'password.required': 'Password is required',
+    'password.minLength': 'Password must be at least 8 characters',
+    'password.confirmed': 'Password confirmation does not match',
+  };
 }

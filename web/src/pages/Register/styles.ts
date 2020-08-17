@@ -21,8 +21,6 @@ export const FormContainer = styled.div`
   border-radius: ${ props => props.theme.borderRadius};
   box-shadow: ${ props => props.theme.boxShadow};
 
-  
-
   .logo {
     margin-bottom: 2rem;
     font-size: 3rem;
