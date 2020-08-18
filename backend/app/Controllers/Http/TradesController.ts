@@ -5,8 +5,20 @@ import TradeStoreValidator from 'App/Validators/Trade/TradeStoreValidator';
 export default class TradesController {
   public async index ({ auth }: HttpContextContract) {
     const userId = auth.user!.id;
-    const trades = await Trade.query().where('user_id', userId).orderBy('created_at');
-    return trades;
+    const trades = await Trade.query().where('user_id', userId).orderBy('created_at', 'desc').exec();
+
+    let tradesByDay: { date: string, trades: Trade[] }[] = [];
+    trades.forEach(trade => {
+      const date = trade.createdAt.toISODate()!;
+      const day = tradesByDay.find(day => day.date === date);
+      if (!day) {
+        tradesByDay.push({ date, trades: [trade] });
+      } else {
+        day.trades.push(trade);
+      }
+    });
+
+    return tradesByDay;
   }
 
   public async store ({ request, auth }: HttpContextContract) {

@@ -47,4 +47,10 @@ export const Container = styled.div<{ expanded: boolean }>`
       line-height: 2.4rem;
     }
   }
+
+  .expanded-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
 `;

@@ -4,6 +4,7 @@ import { MdExpandMore } from 'react-icons/md';
 
 import { Container } from './styles';
 import Trade from '../../models/Trade';
+import { DateTime } from 'luxon';
 
 interface Props {
   trade: Trade;
@@ -50,7 +51,10 @@ const TradeCard: React.FC<Props> = ({ trade }) => {
         </div>
         {expanded &&
           <div className="expanded-space">
-            <span>Description</span>
+            <div className='expanded-header'>
+              <span>Description</span>
+              <span>{DateTime.fromISO(trade.created_at).toLocaleString(DateTime.TIME_SIMPLE)}</span>
+            </div>
             <p>{trade.description}</p>
           </div>
         }

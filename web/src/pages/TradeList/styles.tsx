@@ -22,8 +22,14 @@ export const Header = styled.header`
 `;
 
 export const Trades = styled.div`
+  .trade-day {
+    > * {
+      margin-bottom: 1rem;
+    }
+  }
+
   > * {
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
   }
 `;
 

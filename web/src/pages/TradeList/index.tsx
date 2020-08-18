@@ -13,21 +13,25 @@ import RegularLayout from '../../layouts/RegularLayout';
 import { useTheme } from '../../contexts/theme';
 import tradeService from '../../services/trade.service';
 import Trade from '../../models/Trade';
+import { DateTime } from 'luxon';
 
 const TradeList: React.FC = () => {
   const { signOut } = useAuth();
   const { lightOn, toggle } = useTheme();
 
   const [showForm, setShowForm] = useState<boolean>(false);
-  const [trades, setTrades] = useState<Trade[]>([]);
+  const [tradesByDay, setTradesByDay] = useState<{ date: string, trades: Trade[] }[]>([]);
 
   useEffect(() => {
-    tradeService.get().then(response => setTrades(response.data))
+    tradeService.get().then(response => {
+      console.log(response.data);
+      setTradesByDay(response.data);
+    })
   }, []);
 
   function handleFormSubmit(trade: Trade) {
     tradeService.create(trade).then(response => {
-      setTrades([response.data, ...trades]);
+      // setTradesByDay([response.data, ...trades]);
       setShowForm(false);
     });
   }
@@ -48,13 +52,21 @@ const TradeList: React.FC = () => {
         </AppCard>
 
         {showForm ? (
-          <TradeForm onSubmit={handleFormSubmit}/>
+          <TradeForm onSubmit={handleFormSubmit} />
         ) : (
             <Button type='button' onClick={() => setShowForm(true)}>New Trade</Button>
           )}
+
         <Trades>
-          {trades.length > 0 ? trades.map(trade => (
-            <TradeCard key={trade.id} trade={trade} />
+          {tradesByDay.length > 0 ? tradesByDay.map((tradeDay, index) => (
+            <div key={index} className='trade-day'>
+              <AppCard>{DateTime.fromISO(tradeDay.date).toLocaleString({ weekday: 'long', month: 'long', day: '2-digit' })} ({DateTime.fromISO(tradeDay.date).toRelativeCalendar()})</AppCard>
+              {
+                tradeDay.trades.map(trade => (
+                  <TradeCard key={trade.id} trade={trade} />
+                ))
+              }
+            </div>
           ))
             : !showForm &&
             <NoTradesContainer>
