@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { lighten } from 'polished';
 import { FadeInFromBelow } from '../../styles/animations';
 
 export const Container = styled.div`
@@ -42,5 +43,14 @@ export const Form = styled.form`
 
     margin-bottom: 1.5rem;
   }
+`;
+
+export const ErrorMessage = styled.div`
+  padding: 1rem;
+  text-align: center;
+  margin: 1rem 0;
+  background-color: ${ props => lighten(0.13, props.theme.colors.red)};
+  color: ${ props => props.theme.colors.textLight };
+  border-radius: 1rem;
 `;
 

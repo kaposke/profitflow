@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import AuthService from '../services/auth.service';
 import api from '../services/api.service';
+import { AxiosResponse } from 'axios';
 
 interface User {
   name: string;
@@ -11,7 +12,7 @@ interface User {
 interface AuthContextData {
   signed: boolean;
   user: User | null;
-  signIn(email: string, password: string): Promise<boolean>;
+  signIn(email: string, password: string): Promise<AxiosResponse<any>>;
   signOut(): void;
 }
 
@@ -33,9 +34,10 @@ export const AuthProvider: React.FC = ({ children }) => {
     loadStoredData();
   }, []);
 
-  async function signIn(email: string, password: string): Promise<boolean> {
-    try {
-      const response = await AuthService.signIn({ email, password });
+  async function signIn(email: string, password: string): Promise<AxiosResponse<any>> {
+    const promise = AuthService.signIn({ email, password });
+
+    promise.then(response => {
       const { token, ...data } = response.data;
       const userData = { ...data };
 
@@ -44,11 +46,9 @@ export const AuthProvider: React.FC = ({ children }) => {
 
       localStorage.setItem('@auth:token', token);
       localStorage.setItem('@auth:user', JSON.stringify(userData));
-
-      return true;
-    } catch (err) {
-      return false;
-    }
+    });
+    
+    return promise;
   }
 
   function signOut() {

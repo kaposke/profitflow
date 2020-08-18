@@ -34,16 +34,19 @@ const Register: React.FC = () => {
   const { register, handleSubmit, errors, setError } = useForm<FormData>({ resolver: yupResolver(schema) });
 
   function submit(formData: FormData) {
+    userService.create(formData)
+      .then(response => {
+        toast.success('Account created successfully!');
+        history.push('/');
+      })
+      .catch(({ response }) => {
+        if (!response) return;
+        const { errors } = response.data;
 
-    userService.create(formData).then(response => {
-      toast.success('Account created successfully!');
-      history.push('/');
-    }).catch(({response}) => {
-      const { errors } = response.data;
-      errors.forEach(({field, message}: {field: any, message: string}) => {
-        setError(field, { type: 'manual', message });
+        errors.forEach(({ field, message }: { field: any, message: string }) => {
+          setError(field, { type: 'manual', message });
+        });
       });
-    });
   }
 
   return (

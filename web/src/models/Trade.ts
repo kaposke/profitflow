@@ -6,6 +6,7 @@ interface Trade {
   product: string;
   profit: number;
   description: string;
+  created_at: Date,
 }
 
 export default Trade;
