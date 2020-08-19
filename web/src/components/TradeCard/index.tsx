@@ -5,6 +5,7 @@ import { MdExpandMore } from 'react-icons/md';
 import { Container } from './styles';
 import Trade from '../../models/Trade';
 import { DateTime } from 'luxon';
+import { FiEdit, FiTrash2 } from 'react-icons/fi';
 
 interface Props {
   trade: Trade;
@@ -41,7 +42,10 @@ const TradeCard: React.FC<Props> = ({ trade }) => {
                 </div>
             }
           </div>
-          <h1>{trade.product}</h1>
+          <div className='product'>
+            <h1>{trade.product}</h1>
+            <span>{DateTime.fromISO(trade.created_at!).toLocaleString(DateTime.TIME_SIMPLE)}</span>
+          </div>
           {trade.profit > 0 ?
             <span className="profit green">+R${trade.profit}</span>
             :
@@ -53,9 +57,12 @@ const TradeCard: React.FC<Props> = ({ trade }) => {
           <div className="expanded-space">
             <div className='expanded-header'>
               <span>Description</span>
-              <span>{DateTime.fromISO(trade.created_at).toLocaleString(DateTime.TIME_SIMPLE)}</span>
+              <div className='controlls'>
+                <FiEdit />
+                <FiTrash2 className='red'/>
+              </div>
             </div>
-            <p>{trade.description}</p>
+            <p>{trade.description || 'No description available'}</p>
           </div>
         }
       </Container>

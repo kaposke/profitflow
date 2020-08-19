@@ -18,6 +18,12 @@ export const Form = styled.form`
     grid-column-gap: 1rem;
   }
 
+  .action-error {
+    text-align: center;
+    color: ${props => props.theme.colors.red};
+    margin-top: 0rem;
+  }
+
   .group {
     width: 100%;
     display: flex;

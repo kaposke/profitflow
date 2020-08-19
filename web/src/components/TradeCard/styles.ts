@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 export const Container = styled.div<{ expanded: boolean }>`
   .main {
+    position: relative;
     display: grid;
     grid-template-columns: 3fr 3fr 2fr 1fr;
     align-items: center;
@@ -14,9 +15,11 @@ export const Container = styled.div<{ expanded: boolean }>`
       }
     }
 
-    h1 {
-      justify-self: center;
-      font-size: 2rem;
+    .product {
+      text-align: center;
+      h1 {
+        font-size: 2rem;
+      }
     }
 
     .profit {
@@ -37,6 +40,7 @@ export const Container = styled.div<{ expanded: boolean }>`
         color: ${ props => props.theme.colors.textFaint}
       }
     }
+
   }
 
   .expanded-space {
@@ -52,5 +56,12 @@ export const Container = styled.div<{ expanded: boolean }>`
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    svg {
+      cursor: pointer;
+      width: 2rem;
+      height: 2rem;
+      margin-left: 1rem;
+    }
   }
 `;

@@ -31,7 +31,11 @@ const TradeList: React.FC = () => {
 
   function handleFormSubmit(trade: Trade) {
     tradeService.create(trade).then(response => {
-      // setTradesByDay([response.data, ...trades]);
+      const date = DateTime.fromISO(response.data.created_at!);
+
+      setTradesByDay(tradesByDay.map(day =>
+        day.date === date.toISODate() ? { ...day, trades: [response.data, ...day.trades] } : day
+      ));
       setShowForm(false);
     });
   }

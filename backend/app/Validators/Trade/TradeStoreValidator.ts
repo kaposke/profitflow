@@ -16,7 +16,7 @@ export default class TradeStoreValidator {
     profit: schema.number(),
     entry_price: schema.number(),
     exit_price: schema.number(),
-    description: schema.string(),
+    description: schema.string.optional(),
   });
 
   /**

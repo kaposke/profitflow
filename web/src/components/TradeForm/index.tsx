@@ -1,77 +1,120 @@
 import React, { useState } from 'react';
+import * as yup from "yup";
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers';
 
 import { Container, Form, BuyButton, SellButton } from './styles';
 import AppCard from '../AppCard';
 import Button from '../Button';
 import Trade from '../../models/Trade';
+import Input from '../Input';
+
+interface FormData {
+  action: string;
+  product: string;
+  profit: number;
+  entry_price: number;
+  exit_price: number;
+  description: string;
+}
+
+const schema = yup.object().shape({
+  product: yup.string().required().label('Product'),
+  profit: yup.number().required().label('Profit'),
+  entry_price: yup.number().required().label('Entry price'),
+  exit_price: yup.number().required().label('Exit price'),
+  description: yup.string().optional(),
+});
 
 interface Props {
-  onSubmit(formData: Trade): void;
+  onSubmit(formData: FormData): void;
 }
 
 const TradeForm: React.FC<Props> = ({ onSubmit }) => {
-  const [formData, setFormData] = useState<Trade>({
-    action: '',
-    product: '',
-    profit: 0,
-    entry_price: 0,
-    exit_price: 0,
-    description: ''
-  } as Trade);
+  const [action, setAction] = useState<string>('');
+
+  const { register, handleSubmit, errors, setError, clearErrors } = useForm<FormData>({ resolver: yupResolver(schema) });
 
   function selectBuy() {
-    setFormData({ ...formData, action: 'buy' });
+    setAction('buy');
+    clearErrors('action');
   }
 
   function selectSell() {
-    setFormData({ ...formData, action: 'sell' });
+    setAction('sell');
+    clearErrors('action');
   }
 
-  function handleChange(event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) {
-    const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
-  }
+  function submit(formData: Trade) {
+    if (action === '')
+      setError('action', { type: 'manual', message: 'You must select your action.' })
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    onSubmit(formData);
+    onSubmit({ ...formData, action });
   }
 
   return (
     <AppCard>
       <Container>
-        <Form onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit(submit)}>
           <div className="action-buttons">
-            <BuyButton type='button' selected={formData.action !== "sell"} onClick={selectBuy}>Buy</BuyButton>
-            <SellButton type='button' selected={formData.action !== "buy"} onClick={selectSell}>Sell</SellButton>
+            <BuyButton type='button' selected={action !== "sell"} onClick={selectBuy}>Buy</BuyButton>
+            <SellButton type='button' selected={action !== "buy"} onClick={selectSell}>Sell</SellButton>
           </div>
+          {errors.action && <p className='action-error'>{errors.action?.message}</p>}
 
           <div className="group">
             <div className="field">
               <label htmlFor="product">Product</label>
-              <input name='product' type="text" value={formData.product} onChange={handleChange} />
+              <Input
+                name='product'
+                type="text"
+                ref={register}
+                error={errors.product?.message}
+              />
             </div>
 
             <div className="field">
               <label htmlFor="profit">Profit / Loss</label>
-              <input name='profit' type="number" value={formData.profit} onChange={handleChange} />
+              <Input
+                name='profit'
+                type="number"
+                ref={register}
+                error={errors.profit?.message}
+                defaultValue={0}
+              />
             </div>
           </div>
 
           <div className="group">
             <div className="field">
               <label htmlFor="entry_price">Entry Price</label>
-              <input name='entry_price' type="number" value={formData.entry_price} onChange={handleChange} />
+              <Input
+                name='entry_price'
+                type="number"
+                ref={register}
+                error={errors.entry_price?.message}
+                defaultValue={0}
+              />
             </div>
             <div className="field">
               <label htmlFor="exit_price">Exit Price</label>
-              <input name='exit_price' type="number" value={formData.exit_price} onChange={handleChange} />
+              <Input
+                name='exit_price'
+                type="number"
+                ref={register}
+                error={errors.exit_price?.message}
+                defaultValue={0}
+              />
             </div>
           </div>
 
           <div className="field">
             <label htmlFor="description">Description</label>
-            <textarea name='description' rows={4} value={formData.description} onChange={handleChange} />
+            <textarea
+              name='description'
+              rows={4}
+              ref={register}
+            />
           </div>
 
           <Button type='submit'>Submit</Button>
