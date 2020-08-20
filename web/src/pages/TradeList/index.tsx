@@ -31,11 +31,16 @@ const TradeList: React.FC = () => {
 
   function handleFormSubmit(trade: Trade) {
     tradeService.create(trade).then(response => {
-      const date = DateTime.fromISO(response.data.created_at!);
+      const date = DateTime.fromISO(response.data.created_at!).toISODate();
 
-      setTradesByDay(tradesByDay.map(day =>
-        day.date === date.toISODate() ? { ...day, trades: [response.data, ...day.trades] } : day
-      ));
+      const dayToInsert = tradesByDay.find(day => day.date === date);
+      if (dayToInsert) {
+        setTradesByDay(tradesByDay.map(day =>
+          day === dayToInsert ? { ...day, trades: [response.data, ...day.trades] } : day
+        ));
+      } else {
+        setTradesByDay([{ date: date!, trades: [response.data]}, ...tradesByDay]);
+      }
       setShowForm(false);
     });
   }

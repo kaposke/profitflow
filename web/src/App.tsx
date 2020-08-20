@@ -17,6 +17,7 @@ function App() {
       <AuthProvider>
         <Routes />
       </AuthProvider>
+      
     </ThemeContextProvider>
   );
 }

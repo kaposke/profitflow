@@ -9,15 +9,6 @@ import Button from '../Button';
 import Trade from '../../models/Trade';
 import Input from '../Input';
 
-interface FormData {
-  action: string;
-  product: string;
-  profit: number;
-  entry_price: number;
-  exit_price: number;
-  description: string;
-}
-
 const schema = yup.object().shape({
   product: yup.string().required().label('Product'),
   profit: yup.number().required().label('Profit'),
@@ -27,13 +18,14 @@ const schema = yup.object().shape({
 });
 
 interface Props {
-  onSubmit(formData: FormData): void;
+  trade?: Trade;
+  onSubmit(formData: Trade): void;
 }
 
-const TradeForm: React.FC<Props> = ({ onSubmit }) => {
-  const [action, setAction] = useState<string>('');
+const TradeForm: React.FC<Props> = ({ onSubmit, trade }) => {
+  const [action, setAction] = useState<string>(trade ? trade.action : '');
 
-  const { register, handleSubmit, errors, setError, clearErrors } = useForm<FormData>({ resolver: yupResolver(schema) });
+  const { register, handleSubmit, errors, setError, clearErrors } = useForm<Trade>({ resolver: yupResolver(schema), defaultValues: { ...trade } });
 
   function selectBuy() {
     setAction('buy');
@@ -117,7 +109,7 @@ const TradeForm: React.FC<Props> = ({ onSubmit }) => {
             />
           </div>
 
-          <Button type='submit'>Submit</Button>
+          <Button type='submit'>Save</Button>
         </Form>
       </Container>
     </AppCard>

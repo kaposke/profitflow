@@ -6,13 +6,29 @@ import { Container } from './styles';
 import Trade from '../../models/Trade';
 import { DateTime } from 'luxon';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
+import TradeForm from '../TradeForm';
+import tradeService from '../../services/trade.service';
 
 interface Props {
   trade: Trade;
 }
 
-const TradeCard: React.FC<Props> = ({ trade }) => {
+const TradeCard: React.FC<Props> = ({ trade: tradeInfo }) => {
+  const [trade, setTrade] = useState<Trade>(tradeInfo);
   const [expanded, setExpanded] = useState<boolean>(false);
+  const [editing, setEditing] = useState<boolean>(false);
+
+  async function onSave(newTrade: Trade) {
+    console.log(trade.id);
+    await tradeService.update(trade.id!, newTrade);
+    setTrade({ ...trade, ...newTrade });
+    setEditing(false);
+  }
+
+  if (editing) 
+    return (
+      <TradeForm trade={trade} onSubmit={onSave}/>
+    );
 
   return (
     <AppCard>
@@ -58,7 +74,7 @@ const TradeCard: React.FC<Props> = ({ trade }) => {
             <div className='expanded-header'>
               <span>Description</span>
               <div className='controlls'>
-                <FiEdit />
+                <FiEdit onClick={() => setEditing(true)}/>
                 <FiTrash2 className='red'/>
               </div>
             </div>

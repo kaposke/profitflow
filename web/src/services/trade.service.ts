@@ -7,4 +7,5 @@ const ENDPOINT = '/trades';
 export default {
   get: () => api.get(ENDPOINT),
   create: (trade: Trade): Promise<AxiosResponse<Trade>> => api.post<Trade>(ENDPOINT, { ...trade }),
+  update: (id: number, trade: Trade): Promise<AxiosResponse<Trade>> => api.put<Trade>(`${ENDPOINT}/${id}`, { ...trade }),
 };
