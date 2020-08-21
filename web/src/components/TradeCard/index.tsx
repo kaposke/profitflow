@@ -1,19 +1,22 @@
 import React, { useState } from 'react';
 import AppCard from '../AppCard';
 import { MdExpandMore } from 'react-icons/md';
+import { FiEdit, FiTrash2 } from 'react-icons/fi';
+import { DateTime } from 'luxon';
 
 import { Container } from './styles';
+
 import Trade from '../../models/Trade';
-import { DateTime } from 'luxon';
-import { FiEdit, FiTrash2 } from 'react-icons/fi';
 import TradeForm from '../TradeForm';
 import tradeService from '../../services/trade.service';
 
+
 interface Props {
   trade: Trade;
+  onClickDelete?(id: number): void;
 }
 
-const TradeCard: React.FC<Props> = ({ trade: tradeInfo }) => {
+const TradeCard: React.FC<Props> = ({ trade: tradeInfo, onClickDelete }) => {
   const [trade, setTrade] = useState<Trade>(tradeInfo);
   const [expanded, setExpanded] = useState<boolean>(false);
   const [editing, setEditing] = useState<boolean>(false);
@@ -25,9 +28,9 @@ const TradeCard: React.FC<Props> = ({ trade: tradeInfo }) => {
     setEditing(false);
   }
 
-  if (editing) 
+  if (editing)
     return (
-      <TradeForm trade={trade} onSubmit={onSave}/>
+      <TradeForm trade={trade} onSubmit={onSave} />
     );
 
   return (
@@ -74,8 +77,8 @@ const TradeCard: React.FC<Props> = ({ trade: tradeInfo }) => {
             <div className='expanded-header'>
               <span>Description</span>
               <div className='controlls'>
-                <FiEdit onClick={() => setEditing(true)}/>
-                <FiTrash2 className='red'/>
+                <FiEdit onClick={() => setEditing(true)} />
+                <FiTrash2 className='red' onClick={() => onClickDelete && onClickDelete(trade.id!)} />
               </div>
             </div>
             <p>{trade.description || 'No description available'}</p>

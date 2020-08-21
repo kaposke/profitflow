@@ -5,8 +5,8 @@ export const CustomButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
+  min-width: 10rem;
 
-  width: 100%;
   padding: 1rem;
   background: ${ props => props.theme.colors.green };
 

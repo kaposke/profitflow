@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { FiLogOut, FiSun, FiMoon, FiArrowUp } from 'react-icons/fi';
+import { DateTime } from 'luxon';
+import { toast } from 'react-toastify';
 
-import { Container, Header, Trades, NoTradesContainer } from './styles';
+
+import { Container, Header, Trades, NoTradesContainer, StyledModal } from './styles';
 
 import AppCard from '../../components/AppCard';
 import Button from '../../components/Button';
@@ -13,7 +16,6 @@ import RegularLayout from '../../layouts/RegularLayout';
 import { useTheme } from '../../contexts/theme';
 import tradeService from '../../services/trade.service';
 import Trade from '../../models/Trade';
-import { DateTime } from 'luxon';
 
 const TradeList: React.FC = () => {
   const { signOut } = useAuth();
@@ -21,6 +23,8 @@ const TradeList: React.FC = () => {
 
   const [showForm, setShowForm] = useState<boolean>(false);
   const [tradesByDay, setTradesByDay] = useState<{ date: string, trades: Trade[] }[]>([]);
+  const [deleteConfirmation, setDeleteConfirmation] = useState<boolean>(false);
+  const [deletingAttemptId, setDeletingAttemptId] = useState<number>(0);
 
   useEffect(() => {
     tradeService.get().then(response => {
@@ -39,10 +43,24 @@ const TradeList: React.FC = () => {
           day === dayToInsert ? { ...day, trades: [response.data, ...day.trades] } : day
         ));
       } else {
-        setTradesByDay([{ date: date!, trades: [response.data]}, ...tradesByDay]);
+        setTradesByDay([{ date: date!, trades: [response.data] }, ...tradesByDay]);
       }
       setShowForm(false);
     });
+  }
+
+  function onClickDelete(id: number) {
+    setDeleteConfirmation(true);
+    setDeletingAttemptId(id);
+  }
+
+  async function onDeleteConfirmation() {
+    setDeleteConfirmation(false);
+    await tradeService.delete(deletingAttemptId);
+    const days = tradesByDay.map(day => ({ ...day, trades: day.trades.filter(trade => trade.id !== deletingAttemptId)}))
+    setTradesByDay(days.filter(day => day.trades.length > 0));
+    
+    toast.error('Trade deleted successfully');
   }
 
   return (
@@ -72,7 +90,7 @@ const TradeList: React.FC = () => {
               <AppCard>{DateTime.fromISO(tradeDay.date).toLocaleString({ weekday: 'long', month: 'long', day: '2-digit' })} ({DateTime.fromISO(tradeDay.date).toRelativeCalendar()})</AppCard>
               {
                 tradeDay.trades.map(trade => (
-                  <TradeCard key={trade.id} trade={trade} />
+                  <TradeCard key={trade.id} trade={trade} onClickDelete={onClickDelete} />
                 ))
               }
             </div>
@@ -87,7 +105,22 @@ const TradeList: React.FC = () => {
             </NoTradesContainer>
           }
         </Trades>
+
+        <StyledModal
+          isOpen={deleteConfirmation}
+          onBackgroundClick={() => setDeleteConfirmation(false)}
+          onEscapeKeydown={() => setDeleteConfirmation(false)}
+        >
+          <h2>Deleting trade</h2>
+          <p>Are you sure you want to delete this trade?</p>
+          <div className="modal-buttons">
+            <Button onClick={() => setDeleteConfirmation(false)}>No</Button>
+            <Button className='danger' onClick={onDeleteConfirmation}>Yes, delete trade</Button>
+          </div>
+        </StyledModal>
+
       </Container>
+
     </RegularLayout>
   );
 }

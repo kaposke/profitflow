@@ -1,11 +1,16 @@
 import styled from 'styled-components';
 import { FadeInFromBelow, UpAndDown } from '../../styles/animations';
+import Modal from '../../components/Modal';
 
 export const Container = styled.div`
   animation: ${FadeInFromBelow} 0.5s ease-out;
 
   > * {
     margin-bottom: 1.5rem;
+  }
+
+  button {
+    width: 100%;
   }
 `;
 
@@ -42,5 +47,30 @@ export const NoTradesContainer = styled.div`
     color: ${props => props.theme.colors.green};
 
     animation: ${UpAndDown} 0.7s alternate infinite ease-out;
+  }
+`;
+
+export const StyledModal = styled(Modal)`
+  width: 100%;
+  max-width: 45rem;
+
+  p {
+    margin: 1rem 0 2.5rem 0;
+  }
+  
+  .modal-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    button:first-of-type {
+      /* color: ${props => props.theme.colors.textDark};
+      background: ${props => props.theme.colors.textLight}; */
+      margin-right: 1rem;
+    }
+
+    .danger {
+      background: ${props => props.theme.colors.red};
+    }
   }
 `;

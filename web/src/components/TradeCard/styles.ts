@@ -63,5 +63,9 @@ export const Container = styled.div<{ expanded: boolean }>`
       height: 2rem;
       margin-left: 1rem;
     }
+
+    .controlls {
+      display: flex;
+    }
   }
 `;

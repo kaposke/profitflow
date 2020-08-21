@@ -32,6 +32,10 @@ export const FormContainer = styled.div`
     text-align: center;
     color: ${props => props.theme.colors.text}
   }
+
+  button {
+    width: 100%;
+  }
 `;
 
 export const Form = styled.form`

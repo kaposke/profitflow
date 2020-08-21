@@ -76,9 +76,19 @@ export const GlobalStyle = createGlobalStyle`
     background: ${props => props.theme.colors.green};
   }
 
+  .Toastify__toast--error {
+    background: ${props => props.theme.colors.red};
+  }
+
   /** Used to define container behavior: width, position: fixed etc... **/
   .Toastify__toast-container {
     font-family: Poppins;
     text-align: center;
+    width: 30rem;
   } 
+
+  .Toastify__toast {
+    
+    border-radius: ${props => props.theme.borderRadius}
+  }
 `;
