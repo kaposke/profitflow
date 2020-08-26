@@ -43,12 +43,15 @@ export const Form = styled.form`
 
   @media(min-width: 700px) {
     display: grid;
-    grid-template-columns: ;
 
     .group {
       display: grid;
       grid-template-columns: 1fr 1fr;
       grid-column-gap: 1rem;
+    }
+
+    textarea {
+      resize: vertical;
     }
   }
 `;
