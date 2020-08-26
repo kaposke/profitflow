@@ -13,8 +13,6 @@ export default class Trades extends BaseSchema {
       table.string('action', 4);
       table.string('product', 10);
       table.decimal('profit');
-      table.decimal('entry_price');
-      table.decimal('exit_price');
       table.text('description');
 
       table.timestamps(true);

@@ -42,24 +42,14 @@ const TradeCard: React.FC<Props> = ({ trade: tradeInfo, onClickDelete }) => {
               {
                 trade.action === 'buy' ?
                   <div className="action">
-                    <strong className="green">Buy</strong> at {trade.entry_price}
+                    <strong className="green">Buy</strong>
                   </div>
                   :
                   <div className="action">
-                    <strong className="red">Sell</strong> at {trade.exit_price}
+                    <strong className="red">Sell</strong>
                   </div>
               }
             </div>
-            {
-              trade.action === 'buy' ?
-                <div className="action">
-                  <strong className="red">Sell</strong> at {trade.exit_price}
-                </div>
-                :
-                <div className="action">
-                  <strong className="green">Buy</strong> at {trade.entry_price}
-                </div>
-            }
           </div>
           <div className='product'>
             <h1>{trade.product}</h1>

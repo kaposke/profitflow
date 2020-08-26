@@ -12,8 +12,6 @@ import Input from '../Input';
 const schema = yup.object().shape({
   product: yup.string().required().label('Product'),
   profit: yup.number().required().label('Profit'),
-  entry_price: yup.number().required().label('Entry price'),
-  exit_price: yup.number().required().label('Exit price'),
   description: yup.string().optional(),
 });
 
@@ -72,29 +70,6 @@ const TradeForm: React.FC<Props> = ({ onSubmit, trade }) => {
                 type="number"
                 ref={register}
                 error={errors.profit?.message}
-                defaultValue={0}
-              />
-            </div>
-          </div>
-
-          <div className="group">
-            <div className="field">
-              <label htmlFor="entry_price">Entry Price</label>
-              <Input
-                name='entry_price'
-                type="number"
-                ref={register}
-                error={errors.entry_price?.message}
-                defaultValue={0}
-              />
-            </div>
-            <div className="field">
-              <label htmlFor="exit_price">Exit Price</label>
-              <Input
-                name='exit_price'
-                type="number"
-                ref={register}
-                error={errors.exit_price?.message}
                 defaultValue={0}
               />
             </div>

@@ -22,12 +22,6 @@ export default class Trade extends BaseModel {
   public profit: number;
 
   @column()
-  public entryPrice: number;
-
-  @column()
-  public exitPrice: number;
-
-  @column()
   public description: string;
 
   @column.dateTime({ autoCreate: true })

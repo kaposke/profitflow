@@ -14,8 +14,6 @@ export default class TradeStoreValidator {
       rules.maxLength(10),
     ]),
     profit: schema.number(),
-    entry_price: schema.number(),
-    exit_price: schema.number(),
     description: schema.string.optional(),
   });
 
