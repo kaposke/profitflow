@@ -9,11 +9,12 @@ export default class UserUpdateValidator {
     username: schema.string.optional({}, [
       rules.alpha(),
       rules.maxLength(255),
+      rules.unique({ table: 'users', column: 'username', caseInsensitive: true }),
     ]),
     email: schema.string.optional({}, [
       rules.maxLength(255),
       rules.email(),
-      rules.unique({ table: 'users', column: 'email' }),
+      rules.unique({ table: 'users', column: 'email', caseInsensitive: true }),
       rules.requiredIfExistsAny(['username', 'email']),
     ]),
     password: schema.string.optional({}, [

@@ -8,7 +8,7 @@ export default class LoginValidator {
   public schema = schema.create({
     email: schema.string({}, [
       rules.email(),
-      rules.exists({ table: 'users', column: 'email' }),
+      rules.exists({ table: 'users', column: 'email', caseInsensitive: true }),
     ]),
     password: schema.string(),
   });

@@ -37,6 +37,10 @@ export const Form = styled.form`
     width: 100%;
   }
 
+  button {
+    margin: 0;
+  }
+
   @media(min-width: 700px) {
     display: grid;
     grid-template-columns: ;

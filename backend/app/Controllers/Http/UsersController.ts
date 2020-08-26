@@ -10,7 +10,7 @@ export default class UsersController {
 
   public async store ({ request }: HttpContextContract) {
     const data = await request.validate(UserStoreValidator);
-    const user = await User.create(data);
+    const user = await User.create({...data, email: data.email.toLowerCase()});
     return user;
   }
 
@@ -23,7 +23,7 @@ export default class UsersController {
   public async update ({ request, auth }: HttpContextContract) {
     const data = await request.validate(UserUpdateValidator);
     const { user } = auth;
-    user?.merge(data);
+    user?.merge({...data, email: data.email?.toLowerCase()});
     await user?.save();
     return user;
   }
