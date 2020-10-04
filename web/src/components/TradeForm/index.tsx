@@ -89,21 +89,22 @@ const TradeForm: React.FC<Props> = ({ onSubmit, trade }) => {
             />
           </div>
 
-          <Controller
-            className='date-picker-wrapper'
-            control={control}
-            name="date_time"
-            render={props => (
-              <ReactDatePicker
-                {...props}
-                placeholderText="Select date"
-                selected={props.value}
-                dateFormat='hh:mm dd/MM/yyyy'
-                showTimeInput
-                // startOpen={true}
-              />
-            )}
-          />
+          <div className="field">
+            <label htmlFor="date_time">Date & Time</label>
+            <Controller
+              control={control}
+              name="date_time"
+              render={props => (
+                <ReactDatePicker
+                  {...props}
+                  placeholderText="Select date"
+                  selected={props.value}
+                  dateFormat='hh:mm dd/MM/yyyy'
+                  showTimeInput
+                />
+              )}
+            />
+          </div>
 
           <Button type='submit'>Save</Button>
         </Form>

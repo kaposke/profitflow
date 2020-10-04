@@ -94,6 +94,10 @@ export const GlobalStyle = createGlobalStyle`
     border-radius: ${props => props.theme.borderRadius}
   }
 
+  .react-datepicker-wrapper {
+    width: 100%;
+  }
+  
   .react-datepicker {
     font-size: 1em;
     background: ${props => props.theme.colors.card};
