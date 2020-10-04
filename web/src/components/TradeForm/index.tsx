@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import * as yup from "yup";
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers';
+import ReactDatePicker from 'react-datepicker';
 
 import { Container, Form, BuyButton, SellButton } from './styles';
 import AppCard from '../AppCard';
@@ -13,6 +14,7 @@ const schema = yup.object().shape({
   product: yup.string().required().label('Product'),
   profit: yup.number().required().label('Profit'),
   description: yup.string().optional(),
+  date_time: yup.date().required(),
 });
 
 interface Props {
@@ -23,7 +25,10 @@ interface Props {
 const TradeForm: React.FC<Props> = ({ onSubmit, trade }) => {
   const [action, setAction] = useState<string>(trade ? trade.action : '');
 
-  const { register, handleSubmit, errors, setError, clearErrors } = useForm<Trade>({ resolver: yupResolver(schema), defaultValues: { ...trade } });
+  const { register, handleSubmit, control, errors, setError, clearErrors } = useForm<Trade>({
+    resolver: yupResolver(schema),
+    defaultValues: trade ? { ...trade } : { date_time: new Date() }
+  });
 
   function selectBuy() {
     setAction('buy');
@@ -37,7 +42,7 @@ const TradeForm: React.FC<Props> = ({ onSubmit, trade }) => {
 
   function submit(formData: Trade) {
     if (action === '')
-      setError('action', { type: 'manual', message: 'You must select your action.' })
+      setError('action', { type: 'manual', message: 'You must select your action.' });
 
     onSubmit({ ...formData, action });
   }
@@ -83,6 +88,22 @@ const TradeForm: React.FC<Props> = ({ onSubmit, trade }) => {
               ref={register}
             />
           </div>
+
+          <Controller
+            className='date-picker-wrapper'
+            control={control}
+            name="date_time"
+            render={props => (
+              <ReactDatePicker
+                {...props}
+                placeholderText="Select date"
+                selected={props.value}
+                dateFormat='hh:mm dd/MM/yyyy'
+                showTimeInput
+                // startOpen={true}
+              />
+            )}
+          />
 
           <Button type='submit'>Save</Button>
         </Form>

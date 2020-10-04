@@ -27,6 +27,21 @@ export const Header = styled.header`
 `;
 
 export const Trades = styled.div`
+  .day-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    span {
+      text-transform: capitalize;
+    }
+
+    .profit {
+      font-size: 2rem;
+      font-weight: bold;
+    }
+  }
+
   .trade-day {
     > * {
       margin-bottom: 1rem;

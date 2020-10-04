@@ -1,11 +1,11 @@
 import React from 'react';
-import { ModalProvider } from 'styled-react-modal'
+import { ModalProvider } from 'styled-react-modal';
 
 import './config/toast';
 import './config/yup';
 
 import { ThemeContextProvider } from './contexts/theme';
-import { GlobalStyle } from './styles/global'
+import { GlobalStyle } from './styles/global';
 import { AuthProvider } from './contexts/auth';
 import Routes from './routes';
 

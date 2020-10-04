@@ -24,6 +24,9 @@ export default class Trade extends BaseModel {
   @column()
   public description: string;
 
+  @column.dateTime()
+  public dateTime: DateTime;
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime;
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FiLogOut, FiSun, FiMoon, FiArrowUp } from 'react-icons/fi';
 import { DateTime } from 'luxon';
 import { toast } from 'react-toastify';
-
+import { useBottomScrollListener } from 'react-bottom-scroll-listener';
 
 import { Container, Header, Trades, NoTradesContainer, StyledModal } from './styles';
 
@@ -17,34 +17,87 @@ import { useTheme } from '../../contexts/theme';
 import tradeService from '../../services/trade.service';
 import Trade from '../../models/Trade';
 
+interface Day {
+  date: string;
+  totalProfit: number;
+  trades: Trade[];
+}
+
 const TradeList: React.FC = () => {
   const { signOut } = useAuth();
   const { lightOn, toggle } = useTheme();
 
+  const [loading, setLoading] = useState<boolean>(false);
+  const [loadedAllTrades, setLoadedAllTrades] = useState<boolean>(false);
+
   const [showForm, setShowForm] = useState<boolean>(false);
-  const [tradesByDay, setTradesByDay] = useState<{ date: string, trades: Trade[] }[]>([]);
+  const [tradeDays, setTradeDays] = useState<Day[]>([]);
   const [deleteConfirmation, setDeleteConfirmation] = useState<boolean>(false);
   const [deletingAttemptId, setDeletingAttemptId] = useState<number>(0);
 
+  const [page, setPage] = useState<number>(1);
+  const perPage = 8;
+
+  // Load more on scroll to bottom
+  useBottomScrollListener(() => {
+    if (!loading && !loadedAllTrades)
+      setPage(page + 1);
+  });
+
+  // Load page and add trades to days, or create days that do not yet exist
   useEffect(() => {
-    tradeService.get().then(response => {
-      console.log(response.data);
-      setTradesByDay(response.data);
-    })
-  }, []);
+    setLoading(true);
+    tradeService.get(page, perPage).then(response => {
+      const { data } = response;
+
+      if (!data) {
+        setLoadedAllTrades(true);
+        setLoading(false);
+        return;
+      };
+
+      let days: Day[] = [...tradeDays];
+      const existingDates = days.map(day => day.date);
+
+      data.forEach((day: Day) => {
+        day.trades = day.trades.map(trade => ({ ...trade,  date_time: new Date(trade.date_time) }));
+        const dayIndex = existingDates.findIndex(date => date === day.date);
+
+        if (dayIndex === -1) {
+          existingDates.push(day.date);
+          days.push(day);
+        } else
+          days[dayIndex].trades.push(...day.trades);
+      });
+
+      setTradeDays(days);
+      setLoading(false);
+    });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page]);
 
   function handleFormSubmit(trade: Trade) {
     tradeService.create(trade).then(response => {
-      const date = DateTime.fromISO(response.data.created_at!).toISODate();
+      const date = DateTime.fromJSDate(trade.date_time).toISODate();
 
-      const dayToInsert = tradesByDay.find(day => day.date === date);
+      const dayToInsert = tradeDays.find(day => day.date === date);
+      let newDayList: Day[];
       if (dayToInsert) {
-        setTradesByDay(tradesByDay.map(day =>
-          day === dayToInsert ? { ...day, trades: [response.data, ...day.trades] } : day
-        ));
+        newDayList = tradeDays.map(day =>
+          day === dayToInsert ?
+            {
+              ...day,
+              trades: [{ ...response.data, date_time: trade.date_time }, ...day.trades],
+              totalProfit: day.totalProfit + trade.profit,
+            }
+            :
+            day
+        );
       } else {
-        setTradesByDay([{ date: date!, trades: [response.data] }, ...tradesByDay]);
+        newDayList = [{ date: date!, trades: [{ ...response.data, date_time: trade.date_time }], totalProfit: trade.profit }, ...tradeDays];
       }
+
+      setTradeDays(newDayList.sort((a, b) => Number(new Date(b.date)) - Number(new Date(a.date))));
       setShowForm(false);
     });
   }
@@ -57,9 +110,9 @@ const TradeList: React.FC = () => {
   async function onDeleteConfirmation() {
     setDeleteConfirmation(false);
     await tradeService.delete(deletingAttemptId);
-    const days = tradesByDay.map(day => ({ ...day, trades: day.trades.filter(trade => trade.id !== deletingAttemptId)}))
-    setTradesByDay(days.filter(day => day.trades.length > 0));
-    
+    const days = tradeDays.map(day => ({ ...day, trades: day.trades.filter(trade => trade.id !== deletingAttemptId) }))
+    setTradeDays(days.filter(day => day.trades.length > 0));
+
     toast.error('Trade deleted successfully');
   }
 
@@ -85,9 +138,18 @@ const TradeList: React.FC = () => {
           )}
 
         <Trades>
-          {tradesByDay.length > 0 ? tradesByDay.map((tradeDay, index) => (
+          {tradeDays.length > 0 ? tradeDays.map((tradeDay, index) => (
             <div key={index} className='trade-day'>
-              <AppCard>{DateTime.fromISO(tradeDay.date).toLocaleString({ weekday: 'long', month: 'long', day: '2-digit' })} ({DateTime.fromISO(tradeDay.date).toRelativeCalendar()})</AppCard>
+              <AppCard className='day-card'>
+                <span>
+                  {DateTime.fromISO(tradeDay.date).toLocaleString({ weekday: 'long', month: 'long', day: '2-digit' })} ({DateTime.fromISO(tradeDay.date).toRelativeCalendar()})
+                </span>
+                {tradeDay.totalProfit >= 0 ?
+                  <span className='profit green'>+R${tradeDay.totalProfit}</span>
+                  :
+                  <span className='profit red'>-R${Math.abs(tradeDay.totalProfit)}</span>
+                }
+              </AppCard>
               {
                 tradeDay.trades.map(trade => (
                   <TradeCard key={trade.id} trade={trade} onClickDelete={onClickDelete} />

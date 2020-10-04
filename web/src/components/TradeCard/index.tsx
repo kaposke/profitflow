@@ -10,7 +10,6 @@ import Trade from '../../models/Trade';
 import TradeForm from '../TradeForm';
 import tradeService from '../../services/trade.service';
 
-
 interface Props {
   trade: Trade;
   onClickDelete?(id: number): void;
@@ -22,7 +21,6 @@ const TradeCard: React.FC<Props> = ({ trade: tradeInfo, onClickDelete }) => {
   const [editing, setEditing] = useState<boolean>(false);
 
   async function onSave(newTrade: Trade) {
-    console.log(trade.id);
     await tradeService.update(trade.id!, newTrade);
     setTrade({ ...trade, ...newTrade });
     setEditing(false);
@@ -53,7 +51,7 @@ const TradeCard: React.FC<Props> = ({ trade: tradeInfo, onClickDelete }) => {
           </div>
           <div className='product'>
             <h1>{trade.product}</h1>
-            <span>{DateTime.fromISO(trade.created_at!).toLocaleString(DateTime.TIME_SIMPLE)}</span>
+            <span>{DateTime.fromJSDate(trade.date_time).toLocaleString(DateTime.TIME_SIMPLE)}</span>
           </div>
           {trade.profit > 0 ?
             <span className="profit green">+R${trade.profit}</span>

@@ -9,6 +9,7 @@ declare module 'styled-components' {
       textFaint: string,
       textLight: string,
       textDark: string,
+      textInverted: string,
       green: string,
       red: string,
       linkColor: string,

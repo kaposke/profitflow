@@ -20,7 +20,6 @@ export const ThemeContextProvider: React.FC = ({ children }) => {
   }, []);
 
   function toggle(light?: boolean) {
-    console.log('Toggle!');
     if (light === undefined) {
       toggle(!lightOn);
       return;

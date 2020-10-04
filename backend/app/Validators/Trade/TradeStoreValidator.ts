@@ -15,6 +15,7 @@ export default class TradeStoreValidator {
     ]),
     profit: schema.number(),
     description: schema.string.optional(),
+    date_time: schema.date(),
   });
 
   /**

@@ -3,20 +3,44 @@ import Trade from 'App/Models/Trade';
 import TradeStoreValidator from 'App/Validators/Trade/TradeStoreValidator';
 
 export default class TradesController {
-  public async index ({ auth }: HttpContextContract) {
+  public async index ({ request, auth }: HttpContextContract) {
+    const { page, perPage } = request.get();
     const userId = auth.user!.id;
-    const trades = await Trade.query().where('user_id', userId).orderBy('created_at', 'desc').exec();
+    const paginatedTrades = await Trade.query().where('user_id', userId).orderBy('date_time', 'desc')
+      .paginate(page, perPage);
+    const trades = paginatedTrades.all();
 
-    let tradesByDay: { date: string, trades: Trade[] }[] = [];
+    if (trades.length === 0) {
+      return;
+    }
+
+    let tradesByDay: { date: string, totalProfit: number, trades: Trade[] }[] = [];
     trades.forEach(trade => {
-      const date = trade.createdAt.toISODate()!;
+      const date = trade.dateTime.toISODate()!;
       const day = tradesByDay.find(day => day.date === date);
-      if (!day) {
-        tradesByDay.push({ date, trades: [trade] });
-      } else {
+      if (day) {
+        day.totalProfit += Number(trade.profit);
         day.trades.push(trade);
+      } else {
+        tradesByDay.push({ date, totalProfit: Number(trade.profit), trades: [trade] });
       }
     });
+
+    const lastDate = new Date(tradesByDay[tradesByDay.length - 1].date);
+    const startDate = new Date(lastDate);
+    startDate.setUTCHours(0,0,0,0);
+
+    const endDate = new Date(lastDate);
+    endDate.setUTCHours(23,59,59,999);
+
+    // The last day might be incomplete. We have to get its full totalProfit sum
+    const lastDayTrades = await Trade.query().where('user_id', userId)
+      .whereBetween('date_time', [startDate.toISOString(), endDate.toISOString()])
+      .exec();
+
+    let lastDayTotal = 0;
+    lastDayTrades.forEach(trade => lastDayTotal += trade.profit);
+    tradesByDay[tradesByDay.length - 1].totalProfit = lastDayTotal;
 
     return tradesByDay;
   }

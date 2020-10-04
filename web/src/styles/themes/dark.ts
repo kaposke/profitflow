@@ -6,6 +6,7 @@ export default {
     textFaint: '#B0B2B6',
     textLight: '#FAFAFA',
     textDark: '#4B4B4C',
+    textInverted: '#4B4B4C',
     green: '#43b581',
     red: '#F04747',
     linkColor: '#1e96fc',
