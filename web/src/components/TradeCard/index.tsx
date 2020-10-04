@@ -55,8 +55,10 @@ const TradeCard: React.FC<Props> = ({ trade: tradeInfo, onClickDelete }) => {
           </div>
           {trade.profit > 0 ?
             <span className="profit green">+R${trade.profit}</span>
-            :
+            : trade.profit < 0 ?
             <span className="profit red">-R${Math.abs(trade.profit)}</span>
+            :
+            <span className="profit">R${Math.abs(trade.profit)}</span>
           }
           <MdExpandMore onClick={() => setExpanded(!expanded)} />
         </div>

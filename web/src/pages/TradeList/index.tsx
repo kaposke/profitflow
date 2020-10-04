@@ -144,10 +144,12 @@ const TradeList: React.FC = () => {
                 <span>
                   {DateTime.fromISO(tradeDay.date).toLocaleString({ weekday: 'long', month: 'long', day: '2-digit' })} ({DateTime.fromISO(tradeDay.date).toRelativeCalendar()})
                 </span>
-                {tradeDay.totalProfit >= 0 ?
+                {tradeDay.totalProfit > 0 ?
                   <span className='profit green'>+R${tradeDay.totalProfit}</span>
-                  :
+                  : tradeDay.totalProfit < 0 ?
                   <span className='profit red'>-R${Math.abs(tradeDay.totalProfit)}</span>
+                  :
+                  <span className='profit'>R${Math.abs(tradeDay.totalProfit)}</span>
                 }
               </AppCard>
               {
