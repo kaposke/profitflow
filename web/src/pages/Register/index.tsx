@@ -12,6 +12,7 @@ import { FiUser, FiMail, FiLock, FiCheckSquare } from 'react-icons/fi';
 import Input from '../../components/Input';
 import { useForm } from 'react-hook-form';
 import userService from '../../services/user.service';
+import { useAuth } from '../../contexts/auth';
 
 
 interface FormData {
@@ -30,14 +31,14 @@ const schema = yup.object().shape({
 
 const Register: React.FC = () => {
   const history = useHistory();
+  const { signIn } = useAuth();
 
   const { register, handleSubmit, errors, setError } = useForm<FormData>({ resolver: yupResolver(schema) });
 
   function submit(formData: FormData) {
     userService.create(formData)
       .then(response => {
-        toast.success('Account created successfully!');
-        history.push('/');
+        signIn(formData.email, formData.password);
       })
       .catch(({ response }) => {
         if (!response) return;

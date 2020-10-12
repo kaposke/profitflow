@@ -6,7 +6,7 @@ import { AxiosResponse } from 'axios';
 interface User {
   name: string;
   email: string;
-  isAdmin: boolean;
+  verified: boolean;
 }
 
 interface AuthContextData {
@@ -14,6 +14,7 @@ interface AuthContextData {
   user: User | null;
   signIn(email: string, password: string): Promise<AxiosResponse<any>>;
   signOut(): void;
+  saveAuthCredentials(token: string, name: string, email: string, verified: boolean): void;
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
@@ -38,16 +39,10 @@ export const AuthProvider: React.FC = ({ children }) => {
     const promise = AuthService.signIn({ email, password });
 
     promise.then(response => {
-      const { token, ...data } = response.data;
-      const userData = { ...data };
-
-      api.defaults.headers.authorization = `Bearer ${token}`;
-      setUser(userData);
-
-      localStorage.setItem('@auth:token', token);
-      localStorage.setItem('@auth:user', JSON.stringify(userData));
+      const { token, name, email, verified } = response.data;
+      saveAuthCredentials(token, name, email, verified);
     });
-    
+
     return promise;
   }
 
@@ -58,8 +53,18 @@ export const AuthProvider: React.FC = ({ children }) => {
     setUser(null);
   }
 
+  function saveAuthCredentials(token: string, name: string, email: string, verified: boolean) {
+    const userData = { name, email, verified };
+
+    api.defaults.headers.authorization = `Bearer ${token}`;
+    setUser(userData);
+
+    localStorage.setItem('@auth:token', token);
+    localStorage.setItem('@auth:user', JSON.stringify(userData));
+  }
+
   return (
-    <AuthContext.Provider value={{ signed: !!user, user, signIn, signOut }}>
+    <AuthContext.Provider value={{ signed: !!user, user, signIn, signOut, saveAuthCredentials }}>
       {children}
     </AuthContext.Provider>
   );

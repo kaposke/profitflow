@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { FiLogIn, FiLock, FiMail } from 'react-icons/fi';
 import * as yup from "yup";
@@ -39,11 +39,14 @@ const Login: React.FC = () => {
         setInvalidCredentials(true);
         return;
       }
+
       const { errors } = response.data;
 
-      errors.forEach(({ field, message }: { field: any, message: string }) => {
-        setError(field, { type: 'manual', message });
-      });
+      if (errors) {
+        errors.forEach(({ field, message }: { field: any, message: string }) => {
+          setError(field, { type: 'manual', message });
+        });
+      }
     }
   }
 

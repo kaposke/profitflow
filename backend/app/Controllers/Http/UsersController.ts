@@ -2,6 +2,7 @@ import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
 import User from 'App/Models/User';
 import UserStoreValidator from 'App/Validators/User/UserStoreValidator';
 import UserUpdateValidator from 'App/Validators/User/UserUpdateValidator';
+import AccountVerificationController from 'App/Controllers/Http/AccountVerificationController';
 
 export default class UsersController {
   public async index () {
@@ -11,6 +12,7 @@ export default class UsersController {
   public async store ({ request }: HttpContextContract) {
     const data = await request.validate(UserStoreValidator);
     const user = await User.create({...data, email: data.email.toLowerCase()});
+    AccountVerificationController.sendVerificationEmail(user);
     return user;
   }
 

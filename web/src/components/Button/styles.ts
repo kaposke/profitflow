@@ -1,7 +1,7 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { darken } from 'polished';
 
-export const CustomButton = styled.button`
+export const CustomButton = styled.button<{iconPosition: 'left' | 'right'}>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -22,6 +22,7 @@ export const CustomButton = styled.button`
   }
 
   svg {
-    margin-left: 1rem;
+    margin-left: ${ props => props.iconPosition === 'right' ? '1rem' : 0};
+    margin-right: ${ props => props.iconPosition === 'left' ? '1rem' : 0};
   }
 `;

@@ -26,3 +26,5 @@ Route.resource('/users', 'UsersController').only(['store']);
 Route.resource('/users', 'UsersController').apiOnly().middleware({ '*': 'auth' }).only(['update', 'destroy']);
 
 Route.resource('/trades', 'TradesController').apiOnly().middleware({ '*': 'auth' });
+
+Route.get('/verify', 'AccountVerificationController.verify');

@@ -20,10 +20,13 @@
     "./providers/AppProvider",
     "@adonisjs/core",
     "@adonisjs/lucid",
-    "@adonisjs/auth"
+    "@adonisjs/auth",
+    "@adonisjs/view",
+    "@adonisjs/mail"
   ],
   "metaFiles": [
     ".env",
-    ".adonisrc.json"
+    ".adonisrc.json",
+    "resources/views/**/*.edge"
   ]
 }
