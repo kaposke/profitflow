@@ -24,7 +24,10 @@ Route.post('/login', 'AuthController.login');
 
 Route.resource('/users', 'UsersController').only(['store']);
 Route.resource('/users', 'UsersController').apiOnly().middleware({ '*': 'auth' }).only(['update', 'destroy']);
+Route.get('/users/request-password-change', 'UsersController.requestPasswordChange');
+Route.post('/users/change-password', 'UsersController.changePassword');
 
 Route.resource('/trades', 'TradesController').apiOnly().middleware({ '*': 'auth' });
 
+Route.get('/request-verification-email', 'AccountVerificationController.requestEmail').middleware('auth');
 Route.get('/verify', 'AccountVerificationController.verify');

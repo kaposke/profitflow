@@ -3,13 +3,12 @@
 import User from 'App/Models/User';
 import jwt from 'jsonwebtoken';
 import Env from '@ioc:Adonis/Core/Env';
-import Route from '@ioc:Adonis/Core/Route';
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
 import Mail from '@ioc:Adonis/Addons/Mail';
 
 export default class AccountVerificationController {
   public static sendVerificationEmail (user: User) {
-    const token = jwt.sign({ id: user.id }, Env.get('TOKEN_SECRET') as string, {
+    const token = jwt.sign({ id: user.id }, Env.get('VERIFY_TOKEN_SECRET') as string, {
       expiresIn: '2h',
     });
 
@@ -17,7 +16,7 @@ export default class AccountVerificationController {
 
     Mail.sendLater(message => {
       message
-        .from('proffitflow@gmail.com')
+        .from('profitflow@gmail.com')
         .to(user.email)
         .subject(`Welcome to ProfitFlow, ${user.username}! Confirm your account.`)
         .htmlView('emails/welcome', { user, url });
@@ -26,11 +25,16 @@ export default class AccountVerificationController {
     return url;
   }
 
+  public async requestEmail ({ auth } : HttpContextContract) {
+    const user = auth.user;
+    AccountVerificationController.sendVerificationEmail(user!);
+  }
+
   public async verify ({ request, response, auth }: HttpContextContract) {
     const { token } = request.get();
 
     try {
-      const decoded: any = jwt.verify(token, Env.get('TOKEN_SECRET') as string);
+      const decoded: any = jwt.verify(token, Env.get('VERIFY_TOKEN_SECRET') as string);
 
       const id = decoded.id;
 

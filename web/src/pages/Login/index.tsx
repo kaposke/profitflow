@@ -81,6 +81,7 @@ const Login: React.FC = () => {
                 ref={register}
                 error={errors.password?.message}
               />
+              <p style={{ textAlign: 'end', marginTop: '0.5rem' }}><Link to='/forgot-password'>Forgot my password</Link></p>
             </div>
             <Button type='submit' icon={(<FiLogIn />)}>Sign In</Button>
           </Form>

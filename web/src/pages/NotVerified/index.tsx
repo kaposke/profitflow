@@ -1,10 +1,10 @@
 import React from 'react';
-import { FiLogOut } from 'react-icons/fi';
-import { MdSignalCellularConnectedNoInternet0Bar } from 'react-icons/md';
+import { FiLogOut, FiMail } from 'react-icons/fi';
 import AppCard from '../../components/AppCard';
 import Button from '../../components/Button';
 import Logo from '../../components/Logo';
 import { useAuth } from '../../contexts/auth';
+import AccountVerificationService from '../../services/account-verification.service'
 
 import { Container } from './styles';
 
@@ -31,7 +31,7 @@ const NotVerified: React.FC = () => {
         </p>
 
         <div className="buttons">
-          {/* <Button>Send me another e-mail</Button> */}
+          {/* <Button onClick={AccountVerificationService.requestVerificationEmail} icon={(<FiMail />)} iconPosition='left'>Send me another e-mail</Button> */}
           <Button onClick={signOut} icon={(<FiLogOut />)} iconPosition='left'>Log out</Button>
         </div>
       </AppCard>
