@@ -35,12 +35,21 @@ export default class UserStoreValidator {
    * }
   */
   public messages = {
-    'username.required': 'Username is required',
-    'username.unique': 'This username is already registered',
-    'email.required': 'E-mail is required',
-    'email.unique': 'This e-mail is already registered',
-    'password.required': 'Password is required',
-    'password.minLength': 'Password must be at least 8 characters',
-    'password.confirmed': 'Password confirmation does not match',
+    'username.required': 'O nome de usuário é obrigatório',
+    'username.unique': 'Este nome já está registrado',
+    'email.required': 'O e-mail é obrigatório',
+    'email.unique': 'Este e-mail já está registrado',
+    'password.required': 'A senha é obrigatória',
+    'password.minLength': 'A senha deve possuir pelo menos 8 caracteres',
+    'password.confirmed': 'A confirmação de senha não coincide',
   };
+  // public messages = {
+  //   'username.required': 'Username is required',
+  //   'username.unique': 'This username is already registered',
+  //   'email.required': 'E-mail is required',
+  //   'email.unique': 'This e-mail is already registered',
+  //   'password.required': 'Password is required',
+  //   'password.minLength': 'Password must be at least 8 characters',
+  //   'password.confirmed': 'Password confirmation does not match',
+  // };
 }

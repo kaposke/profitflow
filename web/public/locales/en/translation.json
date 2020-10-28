@@ -1,0 +1,62 @@
+{
+  "signIn": "Sign In",
+  "password": "Password",
+  "passwordConfirmation": "Password Confirmation",
+  "forgotPassword": "Forgot my password",
+  "dontHaveAccount": "<0>Don't have an acount? <1 to='/register'>Sign Up</1></0>",
+  "emailPasswordDoesNotMatch": "E-mail and password do not match.",
+
+  "registerTitle": "Create your account",
+  "username": "Username",
+  "signUp": "Sign Up",
+  "haveAccount": "<0>Already registered? <1 to='/'>Sign In</1></0>",
+
+  "signingOut": "Signing Out...",
+  "welcomeUser": "Welcome to ProfitFlow, {{username}}!",
+  "accountNotVerified": "Your account is not yet verified. Please, click the activation link we sent to <0>{{email}}</0>",
+  "logOut": "Log out",
+
+  "passwordResetDescription": "Enter your e-mail so that we can send you a password reset link.",
+  "sendPasswordReset": "Send password reset email",
+  "cancelPasswordReset": "Wait, I think I've remembered!",
+  "checkYourEmail": "Check your email for a link to reset your password. If it doesn’t appear within a few minutes, check your spam folder.",
+  "backToLogin": "Back to login",
+
+  "invalidToken": "Invalid token. Please, request a new one.",
+  "expiredToken": "Token expired. Please, request a new one.",
+
+  "newPassword": "Provide your new password",
+  "changePassword": "Change password",
+  "passwordChanged": "Password changed successfully!",
+
+  "currencySymbol": "$",
+
+  "newTrade": "New Trade",
+  "noTrades": "<0>You don't have any trades yet!<1 />Click <2 className='green'>New Trade</2> to create your first one.<0/>",
+  
+  "deletingTrade": "Deleting Trade",
+  "deletingTradeConfirmationQuestion": "Are you sure you want to delete this trade?",
+  "tradeDeleted": "Trade deleted successfully",
+  "no": "No",
+  "yes": "Yes",
+
+  "noActionSelected": "You must select your action.",
+  "buy": "Buy",
+  "sell": "Sell",
+  "product": "Product",
+  "profitLoss": "Profit/Loss",
+  "description": "Description",
+  "dateTime": "Date and time",
+  "save": "Save",
+
+  "noDescription": "No description available.",
+
+  "yup": {
+    "default": "{{label}} is invalid",
+    "required": "{{label}} is required",
+    "notType": "Invalid type",
+    "min": "Should be at least {{min}} characters",
+    "email": "{{label}} must be a valid e-mail",
+    "passwordMatch": "Passwords must match"
+  }
+}

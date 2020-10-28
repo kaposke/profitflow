@@ -3,11 +3,12 @@ import { setLocale } from 'yup';
 
 setLocale({
   mixed: {
-    default: 'Is invalid',
-    required: '${label} is required',
-    notType: '${label} should be a ${type}'
+    default: ({ label }) => ({ key: 'yup.default', options: { label }}),
+    required: ({ label }) => ({ key: 'yup.required', options: { label }}),
+    notType: 'yup.notType', 
   },
-  number: {
-    min: 'Should be at least ${min} characters.',
-  },
+  string: {
+    email: ({ label }) => ({ key: 'yup.email', options: { label }}),
+    min: ({ label, min }) => ({ key: 'yup.min', options: { label, min }}),
+  }
 });

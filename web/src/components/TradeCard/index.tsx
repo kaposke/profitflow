@@ -9,6 +9,7 @@ import { Container } from './styles';
 import Trade from '../../models/Trade';
 import TradeForm from '../TradeForm';
 import tradeService from '../../services/trade.service';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   trade: Trade;
@@ -16,6 +17,8 @@ interface Props {
 }
 
 const TradeCard: React.FC<Props> = ({ trade: tradeInfo, onClickDelete }) => {
+  const { t } = useTranslation();
+
   const [trade, setTrade] = useState<Trade>(tradeInfo);
   const [expanded, setExpanded] = useState<boolean>(false);
   const [editing, setEditing] = useState<boolean>(false);
@@ -40,11 +43,11 @@ const TradeCard: React.FC<Props> = ({ trade: tradeInfo, onClickDelete }) => {
               {
                 trade.action === 'buy' ?
                   <div className="action">
-                    <strong className="green">Buy</strong>
+                    <strong className="green">{t('buy')}</strong>
                   </div>
                   :
                   <div className="action">
-                    <strong className="red">Sell</strong>
+                    <strong className="red">{t('sell')}</strong>
                   </div>
               }
             </div>
@@ -54,24 +57,24 @@ const TradeCard: React.FC<Props> = ({ trade: tradeInfo, onClickDelete }) => {
             <span>{DateTime.fromJSDate(trade.date_time).toLocaleString(DateTime.TIME_SIMPLE)}</span>
           </div>
           {trade.profit > 0 ?
-            <span className="profit green">+R${trade.profit}</span>
+            <span className="profit green">+{t('currencySymbol')}{trade.profit}</span>
             : trade.profit < 0 ?
-            <span className="profit red">-R${Math.abs(trade.profit)}</span>
+            <span className="profit red">-{t('currencySymbol')}{Math.abs(trade.profit)}</span>
             :
-            <span className="profit">R${Math.abs(trade.profit)}</span>
+            <span className="profit">{t('currencySymbol')}{Math.abs(trade.profit)}</span>
           }
           <MdExpandMore onClick={() => setExpanded(!expanded)} />
         </div>
         {expanded &&
           <div className="expanded-space">
             <div className='expanded-header'>
-              <span>Description</span>
+              <span>{t('description')}</span>
               <div className='controlls'>
                 <FiEdit onClick={() => setEditing(true)} />
                 <FiTrash2 className='red' onClick={() => onClickDelete && onClickDelete(trade.id!)} />
               </div>
             </div>
-            <p>{trade.description || 'No description available'}</p>
+            <p>{trade.description || t('noDescription')}</p>
           </div>
         }
       </Container>

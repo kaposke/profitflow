@@ -16,6 +16,7 @@ import RegularLayout from '../../layouts/RegularLayout';
 import { useTheme } from '../../contexts/theme';
 import tradeService from '../../services/trade.service';
 import Trade from '../../models/Trade';
+import { Trans, useTranslation } from 'react-i18next';
 
 interface Day {
   date: string;
@@ -24,6 +25,8 @@ interface Day {
 }
 
 const TradeList: React.FC = () => {
+  const { t } = useTranslation();
+
   const { signOut } = useAuth();
   const { lightOn, toggle } = useTheme();
 
@@ -60,7 +63,7 @@ const TradeList: React.FC = () => {
       const existingDates = days.map(day => day.date);
 
       data.forEach((day: Day) => {
-        day.trades = day.trades.map(trade => ({ ...trade,  date_time: new Date(trade.date_time) }));
+        day.trades = day.trades.map(trade => ({ ...trade, date_time: new Date(trade.date_time) }));
         const dayIndex = existingDates.findIndex(date => date === day.date);
 
         if (dayIndex === -1) {
@@ -73,7 +76,7 @@ const TradeList: React.FC = () => {
       setTradeDays(days);
       setLoading(false);
     });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 
   function handleFormSubmit(trade: Trade) {
@@ -113,7 +116,7 @@ const TradeList: React.FC = () => {
     const days = tradeDays.map(day => ({ ...day, trades: day.trades.filter(trade => trade.id !== deletingAttemptId) }))
     setTradeDays(days.filter(day => day.trades.length > 0));
 
-    toast.error('Trade deleted successfully');
+    toast.error(t('tradeDeleted'));
   }
 
   return (
@@ -134,7 +137,7 @@ const TradeList: React.FC = () => {
         {showForm ? (
           <TradeForm onSubmit={handleFormSubmit} />
         ) : (
-            <Button type='button' onClick={() => setShowForm(true)}>New Trade</Button>
+            <Button type='button' onClick={() => setShowForm(true)}>{t('newTrade')}</Button>
           )}
 
         <Trades>
@@ -145,11 +148,11 @@ const TradeList: React.FC = () => {
                   {DateTime.fromISO(tradeDay.date).toLocaleString({ weekday: 'long', month: 'long', day: '2-digit' })} ({DateTime.fromISO(tradeDay.date).toRelativeCalendar()})
                 </span>
                 {tradeDay.totalProfit > 0 ?
-                  <span className='profit green'>+R${tradeDay.totalProfit}</span>
+                  <span className='profit green'>+{t('currencySymbol')}{tradeDay.totalProfit}</span>
                   : tradeDay.totalProfit < 0 ?
-                  <span className='profit red'>-R${Math.abs(tradeDay.totalProfit)}</span>
-                  :
-                  <span className='profit'>R${Math.abs(tradeDay.totalProfit)}</span>
+                    <span className='profit red'>-{t('currencySymbol')}{Math.abs(tradeDay.totalProfit)}</span>
+                    :
+                    <span className='profit'>{t('currencySymbol')}{Math.abs(tradeDay.totalProfit)}</span>
                 }
               </AppCard>
               {
@@ -162,10 +165,9 @@ const TradeList: React.FC = () => {
             : !showForm &&
             <NoTradesContainer>
               <FiArrowUp />
-              <p>
-                You don't have any trades yet!<br />
-                Click <span className='green'>New Trade</span> to create your first one.
-              </p>
+              <Trans i18nKey='noTrades'>
+                <p> <br /><span className='green'> </span></p>
+              </Trans>
             </NoTradesContainer>
           }
         </Trades>
@@ -175,11 +177,11 @@ const TradeList: React.FC = () => {
           onBackgroundClick={() => setDeleteConfirmation(false)}
           onEscapeKeydown={() => setDeleteConfirmation(false)}
         >
-          <h2>Deleting trade</h2>
-          <p>Are you sure you want to delete this trade?</p>
+          <h2>{t('deletingTrade')}</h2>
+          <p>{t('deletingTradeConfirmationQuestion')}</p>
           <div className="modal-buttons">
-            <Button onClick={() => setDeleteConfirmation(false)}>No</Button>
-            <Button className='danger' onClick={onDeleteConfirmation}>Yes, delete trade</Button>
+            <Button onClick={() => setDeleteConfirmation(false)}>{t('no')}</Button>
+            <Button className='danger' onClick={onDeleteConfirmation}>{t('yes')}</Button>
           </div>
         </StyledModal>
 

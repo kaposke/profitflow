@@ -8,7 +8,7 @@ import Mail from '@ioc:Adonis/Addons/Mail';
 
 export default class AccountVerificationController {
   public static sendVerificationEmail (user: User) {
-    const token = jwt.sign({ id: user.id }, Env.get('VERIFY_TOKEN_SECRET') as string, {
+    const token = jwt.sign({ id: user.id }, Env.get('VERIFICATION_TOKEN_SECRET') as string, {
       expiresIn: '2h',
     });
 
@@ -34,7 +34,7 @@ export default class AccountVerificationController {
     const { token } = request.get();
 
     try {
-      const decoded: any = jwt.verify(token, Env.get('VERIFY_TOKEN_SECRET') as string);
+      const decoded: any = jwt.verify(token, Env.get('VERIFICATION_TOKEN_SECRET') as string);
 
       const id = decoded.id;
 

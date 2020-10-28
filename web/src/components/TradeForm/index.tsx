@@ -9,6 +9,7 @@ import AppCard from '../AppCard';
 import Button from '../Button';
 import Trade from '../../models/Trade';
 import Input from '../Input';
+import { useTranslation } from 'react-i18next';
 
 const schema = yup.object().shape({
   product: yup.string().required().label('Product'),
@@ -23,6 +24,7 @@ interface Props {
 }
 
 const TradeForm: React.FC<Props> = ({ onSubmit, trade }) => {
+  const { t } = useTranslation();
   const [action, setAction] = useState<string>(trade ? trade.action : '');
 
   const { register, handleSubmit, control, errors, setError, clearErrors } = useForm<Trade>({
@@ -42,7 +44,7 @@ const TradeForm: React.FC<Props> = ({ onSubmit, trade }) => {
 
   function submit(formData: Trade) {
     if (action === '')
-      setError('action', { type: 'manual', message: 'You must select your action.' });
+      setError('action', { type: 'manual', message: t('noActionSelected') });
 
     onSubmit({ ...formData, action });
   }
@@ -52,14 +54,14 @@ const TradeForm: React.FC<Props> = ({ onSubmit, trade }) => {
       <Container>
         <Form onSubmit={handleSubmit(submit)}>
           <div className="action-buttons">
-            <BuyButton type='button' selected={action !== "sell"} onClick={selectBuy}>Buy</BuyButton>
-            <SellButton type='button' selected={action !== "buy"} onClick={selectSell}>Sell</SellButton>
+            <BuyButton type='button' selected={action !== "sell"} onClick={selectBuy}>{t('buy')}</BuyButton>
+            <SellButton type='button' selected={action !== "buy"} onClick={selectSell}>{t('sell')}</SellButton>
           </div>
           {errors.action && <p className='action-error'>{errors.action?.message}</p>}
 
           <div className="group">
             <div className="field">
-              <label htmlFor="product">Product</label>
+              <label htmlFor="product">{t('product')}</label>
               <Input
                 name='product'
                 type="text"
@@ -69,7 +71,7 @@ const TradeForm: React.FC<Props> = ({ onSubmit, trade }) => {
             </div>
 
             <div className="field">
-              <label htmlFor="profit">Profit / Loss</label>
+              <label htmlFor="profit">{t('profitLoss')}</label>
               <Input
                 name='profit'
                 type="number"
@@ -81,7 +83,7 @@ const TradeForm: React.FC<Props> = ({ onSubmit, trade }) => {
           </div>
 
           <div className="field">
-            <label htmlFor="description">Description</label>
+            <label htmlFor="description">{t('description')}</label>
             <textarea
               name='description'
               rows={4}
@@ -90,7 +92,7 @@ const TradeForm: React.FC<Props> = ({ onSubmit, trade }) => {
           </div>
 
           <div className="field">
-            <label htmlFor="date_time">Date & Time</label>
+            <label htmlFor="date_time">{t('dateTime')}</label>
             <Controller
               control={control}
               name="date_time"
@@ -106,7 +108,7 @@ const TradeForm: React.FC<Props> = ({ onSubmit, trade }) => {
             />
           </div>
 
-          <Button type='submit'>Save</Button>
+          <Button type='submit'>{t('save')}</Button>
         </Form>
       </Container>
     </AppCard>

@@ -1,4 +1,9 @@
-<h1> Welcome {{ user.username }} </h1>
+@layout('layouts/email')
+
+@section('content')
+<h1>Bem vindo(a), {{ user.username }}!</h1>
 <p>
-  <a href="{{url}}">Click here</a> to verify your email address.
+  Obrigado por se registrar no ProfitFlow!
+  <a href="{{url}}">Clique aqui</a> para verificar o seu endereço de e-mail e nunca mais perca o controle sobre as suas operações!
 </p>
+@endsection

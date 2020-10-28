@@ -35,5 +35,10 @@ export default class UserUpdateValidator {
    *   'scores.*.number': 'Define scores as valid numbers'
    * }
   */
-  public messages = {};
+  public messages = {
+    'username.unique': 'Este nome já está registrado',
+    'email.unique': 'Este e-mail já está registrado',
+    'password.minLength': 'A senha deve possuir pelo menos 8 caracteres',
+    'password.confirmed': 'A confirmação de senha não coincide',
+  };
 }

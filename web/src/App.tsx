@@ -9,7 +9,6 @@ import { GlobalStyle } from './styles/global';
 import { AuthProvider } from './contexts/auth';
 import Routes from './routes';
 
-
 function App() {
   return (
     <ThemeContextProvider>

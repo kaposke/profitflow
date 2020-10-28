@@ -1,19 +1,21 @@
 import React from 'react';
-import { FiLogOut, FiMail } from 'react-icons/fi';
+import { Trans, useTranslation } from 'react-i18next';
+import { FiLogOut } from 'react-icons/fi';
 import AppCard from '../../components/AppCard';
 import Button from '../../components/Button';
 import Logo from '../../components/Logo';
 import { useAuth } from '../../contexts/auth';
-import AccountVerificationService from '../../services/account-verification.service'
 
 import { Container } from './styles';
 
 const NotVerified: React.FC = () => {
+  const { t } = useTranslation();
+
   const { user, signOut } = useAuth();
 
   if (!user) {
     signOut();
-    return <div>Signing Out...</div>;
+    return (<div>{t('signingOut')}</div>);
   }
 
   return (
@@ -24,15 +26,17 @@ const NotVerified: React.FC = () => {
         </div> */}
         <Logo />
         <p>
-          Welcome to ProfitFlow, {user.name}!
+          {t('welcomeUser', { username: user.name })}
         </p>
         <p>
-          Your account is not yet verified. Please, click the activation link we sent to <span>{user.email}</span>
+          <Trans i18nKey='accountNotVerified' tOptions={{ email: user.email }}>
+              <span>{user.email}</span>
+          </Trans>
         </p>
 
         <div className="buttons">
           {/* <Button onClick={AccountVerificationService.requestVerificationEmail} icon={(<FiMail />)} iconPosition='left'>Send me another e-mail</Button> */}
-          <Button onClick={signOut} icon={(<FiLogOut />)} iconPosition='left'>Log out</Button>
+        <Button onClick={signOut} icon={(<FiLogOut />)} iconPosition='left'>{t('logOut')}</Button>
         </div>
       </AppCard>
     </Container>

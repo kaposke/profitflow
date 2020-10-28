@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { FiLogIn, FiLock, FiMail } from 'react-icons/fi';
 import * as yup from "yup";
+import { yupResolver } from '@hookform/resolvers';
+import { Trans, useTranslation } from 'react-i18next'
 
 import { Container, Form, FormContainer, ErrorMessage } from './styles';
 import Button from '../../components/Button';
@@ -10,21 +12,22 @@ import Logo from '../../components/Logo';
 import CenteredLayout from '../../layouts/CenteredLayout';
 import Input from '../../components/Input';
 import { useAuth } from '../../contexts/auth';
-import { yupResolver } from '@hookform/resolvers';
+import { tYup } from '../../utils/tYup';
 
 interface FormData {
   email: string;
   password: string;
 }
 
-const schema = yup.object().shape({
-  email: yup.string().email().required().label('E-mail'),
-  password: yup.string().required().label('Password'),
-});
-
 const Login: React.FC = () => {
+  const { t, i18n } = useTranslation();
+
   const { signIn } = useAuth();
 
+  const schema = yup.object().shape({
+    email: yup.string().email().required().label('E-mail'),
+    password: yup.string().required().label(i18n.t('password')),
+  });
   const { register, handleSubmit, errors, setError } = useForm<FormData>({ resolver: yupResolver(schema) });
 
   const [invalidCredentials, setInvalidCredentials] = useState<boolean>(false);
@@ -50,15 +53,16 @@ const Login: React.FC = () => {
     }
   }
 
+
   return (
     <CenteredLayout>
       <Container>
         <FormContainer>
           <Logo />
-          <h2>Sign In</h2>
+          <h2>{t('signIn')}</h2>
 
           {invalidCredentials &&
-            <ErrorMessage>E-mail and password do not match.</ErrorMessage>
+            <ErrorMessage>{t('emailPasswordDoesNotMatch')}</ErrorMessage>
           }
 
           <Form onSubmit={handleSubmit(submit)}>
@@ -69,25 +73,26 @@ const Login: React.FC = () => {
                 type="text"
                 icon={(<FiMail />)}
                 ref={register}
-                error={errors.email?.message}
+                error={tYup(errors.email?.message)}
               />
             </div>
             <div className="field">
-              <label htmlFor="password">Password</label>
+              <label htmlFor="password">{t('password')}</label>
               <Input
                 name="password"
                 type="password"
                 icon={(<FiLock />)}
                 ref={register}
-                error={errors.password?.message}
+                error={tYup(errors.password?.message, { context: 'f'})}
               />
-              <p style={{ textAlign: 'end', marginTop: '0.5rem' }}><Link to='/forgot-password'>Forgot my password</Link></p>
+              <p style={{ textAlign: 'end', marginTop: '0.5rem' }}>
+              <Link to='/forgot-password'>{t('forgotPassword')}</Link></p>
             </div>
-            <Button type='submit' icon={(<FiLogIn />)}>Sign In</Button>
+            <Button type='submit' icon={(<FiLogIn />)}>{t('signIn')}</Button>
           </Form>
 
         </FormContainer>
-        <p>Don't have an acount? <Link to='/register'>Sign Up</Link></p>
+        <Trans i18nKey='dontHaveAccount'><p>Don't have an acount? <Link to='/register'>Sign Up</Link></p></Trans>
       </Container>
     </CenteredLayout>
   );

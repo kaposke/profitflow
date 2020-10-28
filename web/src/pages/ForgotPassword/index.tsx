@@ -11,18 +11,22 @@ import Button from '../../components/Button';
 import CenteredLayout from '../../layouts/CenteredLayout';
 import { Link } from 'react-router-dom';
 import UserService from '../../services/user.service';
+import { useTranslation } from 'react-i18next';
+import { tYup } from '../../utils/tYup';
 
 interface FormData {
   email: string;
 }
 
-const schema = yup.object().shape({
-  email: yup.string().email().required().label('E-mail'),
-});
 
 const ForgotPassword: React.FC = () => {
+  const { t } = useTranslation();
+
   const [emailSent, setEmailSent] = useState<boolean>(false);
 
+  const schema = yup.object().shape({
+    email: yup.string().email().required().label('E-mail'),
+  });
   const { register, handleSubmit, errors } = useForm<FormData>({ resolver: yupResolver(schema) });
 
 
@@ -39,7 +43,7 @@ const ForgotPassword: React.FC = () => {
             <>
               <AppCard>
                 <Logo />
-                <p>Enter your e-mail so that we can send you a password reset link.</p>
+                <p>{t('passwordResetDescription')}</p>
                 <form onSubmit={handleSubmit(submit)}>
                   <div className="field">
                     {/* <label htmlFor="email">E-mail</label> */}
@@ -48,25 +52,24 @@ const ForgotPassword: React.FC = () => {
                       type="text"
                       icon={(<FiMail />)}
                       ref={register}
-                      error={errors.email?.message}
+                      error={tYup(errors.email?.message)}
                     />
                   </div>
-                  <Button type='submit' icon={(<FiMail />)} iconPosition='left'>Send password reset email</Button>
+                  <Button type='submit' icon={(<FiMail />)} iconPosition='left'>{t('sendPasswordReset')}</Button>
                 </form>
               </AppCard>
-              <p><Link to='/'>Wait, I think I've remembered!</Link></p>
+              <p><Link to='/'>{t('cancelPasswordReset')}</Link></p>
             </>
           ) : (
-            <>
-              <AppCard>
-                <Logo />
-                <p>Check your email for a link to reset your password. If it doesn’t appear within a few minutes, check your spam folder.</p>
-                <Link to='/'><Button>Back to login</Button></Link>
-              </AppCard>
-            </>
-          )
+              <>
+                <AppCard>
+                  <Logo />
+                  <p>{t('checkYourEmail')}</p>
+                  <Link to='/'><Button>{t('backToLogin')}</Button></Link>
+                </AppCard>
+              </>
+            )
         }
-
       </Container>
     </CenteredLayout>
   );

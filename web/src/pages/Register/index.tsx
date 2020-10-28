@@ -1,18 +1,19 @@
 import React from 'react';
-import { toast } from 'react-toastify';
 import * as yup from "yup";
 import { yupResolver } from '@hookform/resolvers';
 
 import { Container, Form, FormContainer } from './styles';
 import Button from '../../components/Button';
 import Logo from '../../components/Logo';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import CenteredLayout from '../../layouts/CenteredLayout';
 import { FiUser, FiMail, FiLock, FiCheckSquare } from 'react-icons/fi';
 import Input from '../../components/Input';
 import { useForm } from 'react-hook-form';
 import userService from '../../services/user.service';
 import { useAuth } from '../../contexts/auth';
+import { Trans, useTranslation } from 'react-i18next';
+import { tYup } from '../../utils/tYup';
 
 
 interface FormData {
@@ -22,16 +23,17 @@ interface FormData {
   password_confirmation: string;
 }
 
-const schema = yup.object().shape({
-  username: yup.string().required().label('Username'),
-  email: yup.string().email().required().label('E-mail'),
-  password: yup.string().min(8).required().label('Password'),
-  password_confirmation: yup.string().oneOf([yup.ref('password')], 'Passwords must match').required().label('Password Confirmation'),
-});
-
 const Register: React.FC = () => {
-  const history = useHistory();
+  const { t } = useTranslation();
+
   const { signIn } = useAuth();
+
+  const schema = yup.object().shape({
+    username: yup.string().required().label(t('username')),
+    email: yup.string().email().required().label('E-mail'),
+    password: yup.string().min(8).required().label(t('password')),
+    password_confirmation: yup.string().oneOf([yup.ref('password')], t('yup.passwordMatch')).required().label(t('passwordConfirmation')),
+  });
 
   const { register, handleSubmit, errors, setError } = useForm<FormData>({ resolver: yupResolver(schema) });
 
@@ -55,16 +57,16 @@ const Register: React.FC = () => {
       <Container>
         <FormContainer>
           <Logo />
-          <h2>Create your account</h2>
+          <h2>{t('registerTitle')}</h2>
           <Form onSubmit={handleSubmit(submit)}>
             <div className="field">
-              <label htmlFor="username">Username</label>
+              <label htmlFor="username">{t('username')}</label>
               <Input
                 name="username"
                 type="text"
                 icon={(<FiUser />)}
                 ref={register}
-                error={errors.username?.message}
+                error={tYup(errors.username?.message)}
               />
             </div>
             <div className="field">
@@ -74,33 +76,33 @@ const Register: React.FC = () => {
                 type="email"
                 icon={(<FiMail />)}
                 ref={register}
-                error={errors.email?.message}
+                error={tYup(errors.email?.message)}
               />
             </div>
             <div className="field">
-              <label htmlFor="password">Password</label>
+              <label htmlFor="password">{t('password')}</label>
               <Input
                 name="password"
                 type="password"
                 icon={(<FiLock />)}
                 ref={register}
-                error={errors.password?.message}
+                error={tYup(errors.password?.message, { context: 'f'})}
               />
             </div>
             <div className="field">
-              <label htmlFor="password_confirmation">Password Confirmation</label>
+              <label htmlFor="password_confirmation">{t('passwordConfirmation')}</label>
               <Input
                 name="password_confirmation"
                 type="password"
                 icon={(<FiCheckSquare />)}
                 ref={register}
-                error={errors.password_confirmation?.message}
+                error={tYup(errors.password_confirmation?.message, { context: 'f'})}
               />
             </div>
-            <Button>Sign Up</Button>
+            <Button>{t('signUp')}</Button>
           </Form>
         </FormContainer>
-        <p>Already registered? <Link to='/'>Sign In</Link></p>
+        <Trans i18nKey='haveAccount'><p>Already registered? <Link to='/'>Sign In</Link></p></Trans>
       </Container>
     </CenteredLayout>
   );

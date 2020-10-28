@@ -1,0 +1,65 @@
+{
+  "signIn": "Entrar",
+  "password": "Senha",
+  "passwordConfirmation": "Confirmação de senha",
+  "forgotPassword": "Esqueci minha senha",
+  "dontHaveAccount": "<0>Não tem uma conta? <1 to='/register'>Crie uma!</1></0>",
+  "emailPasswordDoesNotMatch": "E-mail e senha não coincidem",
+
+  "registerTitle": "Criar conta",
+  "username": "Nome de usuário",
+  "signUp": "Criar conta",
+  "haveAccount": "<0>Já tem uma conta? <1 to='/'>Entrar</1></0>",
+
+  
+  "signingOut": "Saindo...",
+  "welcomeUser": "Bem vindo ao ProfitFlow, {{username}}!",
+  "accountNotVerified": "Sua conta ainda não foi verificada. Por favor, clique no link de ativação que enviamos para <0>{{email}}</0>",
+  "logOut": "Sair",
+
+  "passwordResetDescription": "Coloque seu e-mail para que possamos lhe enviar um link de alteração de senha.",
+  "sendPasswordReset": "Enviar e-mail de alteração",
+  "cancelPasswordReset": "Espere, acho que me lembrei!",
+  "checkYourEmail": "Verifique seu e-mail para alterar a sua senha. Se não receber em alguns minutos, verifique a sua pasta de spam.",
+  "backToLogin": "Voltar ao login",
+
+  "invalidToken": "Token inválido. Por favor, crie um novo.",
+  "expiredToken": "Token expirado. Por favor, crie um novo.",
+
+  "newPassword": "Forneça a nova senha",
+  "changePassword": "Alterar senha",
+  "passwordChanged": "Senha alterada com sucesso!",
+
+  "currencySymbol": "R$",
+
+  "newTrade": "Novo trade",
+  "noTrades": "<0>Você ainda não possui trades!<1 />Clique em <2 className='green'>Novo trade</2> para criar o seu primeiro.<0/>",
+  
+  "deletingTrade": "Excluindo trade",
+  "deletingTradeConfirmationQuestion": "Você tem certeza que deseja excluir este trade?",
+  "tradeDeleted": "Trade excluido",
+  "no": "Não",
+  "yes": "Sim",
+
+  "noActionSelected": "Você deve selecionar uma ação.",
+  "buy": "Compra",
+  "sell": "Venda",
+  "product": "Ativo",
+  "profitLoss": "Lucro/Prejuizo",
+  "description": "Descrição",
+  "dateTime": "Data e hora",
+  "save": "Salvar",
+  
+  "noDescription": "Nenhuma descrição disponível.",
+
+  "yup": {
+    "default": "{{label}} inválido",
+    "default_f": "{{label}} inválida",
+    "required": "{{label}} obrigatório",
+    "required_f": "{{label}} obrigatória",
+    "notType": "Tipo inválido",
+    "min": "Deve possuir pelo menos {{min}} caracteres",
+    "email": "{{label}} deve ser um e-mail válido",
+    "passwordMatch": "As senhas devem ser indênticas"
+  }
+}
