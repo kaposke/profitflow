@@ -4,57 +4,91 @@ import { FadeInFromBelow } from '../../styles/animations';
 
 export const Container = styled.div`
   width: 100%;
-  max-width: 44rem;
+  max-width: 120rem;
+  height: 100%;
   padding: 0 2rem;
-
-  animation: ${FadeInFromBelow} 0.5s ease-out;
 
   p {
     margin-top: 1rem;
     text-align: center;
   }
+
+  .login {
+    margin-top: 5rem;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+  }
+
+  @media(min-width: 1024px) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 2rem;
+    .login { 
+      align-items: center;
+    }
+  }
 `;
 
-export const FormContainer = styled.div`
-  width: 100%;
-  background: ${props => props.theme.colors.card};
-  padding: 3rem;
-  border-radius: ${ props => props.theme.borderRadius};
-  box-shadow: ${ props => props.theme.boxShadow};
+export const LandingContent = styled.div`
 
   .logo {
-    margin-bottom: 2rem;
-    font-size: 3rem;
+      font-size: 5rem;
+      margin-bottom: 0;
   }
 
   h2 {
-    margin-bottom: 1rem;
     text-align: center;
-    color: ${props => props.theme.colors.text}
+    margin-top: -1rem;
   }
 
-  button {
-    width: 100%;
+  .mockup-images {
+    display: none;
   }
-`;
 
-export const Form = styled.form`
+  /* background: #f0f0f0; */
 
-  .field {
-    label {
-      display: block;
+  @media(min-width: 1024px) {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+
+    .logo {
+      font-size: 8rem;
+      margin-bottom: 0;
     }
 
-    margin-bottom: 1.5rem;
+    h2 {
+      margin-top: -2rem;
+    }
+    
+    p {
+      margin-top: 3rem;
+      font-size: 1.8rem;
+      text-align: left;
+    }
+
+    .mockup-images {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 5rem;
+
+      .laptop-mockup {
+        display: inline-block;
+        img {
+          height: 30rem;
+        }
+      }
+
+      .phone-mockup {
+        display: inline-block;
+        margin: 4rem 0 0 -15rem;
+        img {
+          height: 25rem;
+        }
+      }
+    }
   }
 `;
-
-export const ErrorMessage = styled.div`
-  padding: 1rem;
-  text-align: center;
-  margin: 1rem 0;
-  background-color: ${ props => lighten(0.13, props.theme.colors.red)};
-  color: ${ props => props.theme.colors.textLight };
-  border-radius: 1rem;
-`;
-

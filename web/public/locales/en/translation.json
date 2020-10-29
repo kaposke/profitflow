@@ -1,4 +1,7 @@
 {
+  "landingSubtitle": "Your trading diary",
+  "landingDescription": "Keep track of all your trades and profits in only one place.",
+
   "signIn": "Sign In",
   "password": "Password",
   "passwordConfirmation": "Password Confirmation",
