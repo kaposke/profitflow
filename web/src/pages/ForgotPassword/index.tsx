@@ -58,14 +58,14 @@ const ForgotPassword: React.FC = () => {
                   <Button type='submit' icon={(<FiMail />)} iconPosition='left'>{t('sendPasswordReset')}</Button>
                 </form>
               </AppCard>
-              <p><Link to='/'>{t('cancelPasswordReset')}</Link></p>
+              <p><Link to='/login'>{t('cancelPasswordReset')}</Link></p>
             </>
           ) : (
               <>
                 <AppCard>
                   <Logo />
                   <p>{t('checkYourEmail')}</p>
-                  <Link to='/'><Button>{t('backToLogin')}</Button></Link>
+                  <Link to='/login'><Button>{t('backToLogin')}</Button></Link>
                 </AppCard>
               </>
             )

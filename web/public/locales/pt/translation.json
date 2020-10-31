@@ -6,13 +6,13 @@
   "password": "Senha",
   "passwordConfirmation": "Confirmação de senha",
   "forgotPassword": "Esqueci minha senha",
-  "dontHaveAccount": "<0>Não tem uma conta? <1 to='/register'>Crie uma!</1></0>",
+  "dontHaveAccount": "<0>Não tem uma conta? <1 to='/'>Crie uma!</1></0>",
   "emailPasswordDoesNotMatch": "E-mail e senha não coincidem",
 
-  "registerTitle": "Criar conta",
+  "registerTitle": "Comece a usar de graça",
   "username": "Nome de usuário",
   "signUp": "Criar conta",
-  "haveAccount": "<0>Já tem uma conta? <1 to='/'>Entrar</1></0>",
+  "haveAccount": "<0>Já tem uma conta? <1 to='/login'>Entrar</1></0>",
 
   
   "signingOut": "Saindo...",

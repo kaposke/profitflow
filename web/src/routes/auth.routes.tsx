@@ -9,8 +9,8 @@ import Verify from '../pages/Verify';
 const AuthRoutes: React.FC = () => {
   return (
     <BrowserRouter>
-      <Route path='/' exact component={Login}/>
-      <Route path='/register' component={Register}/>
+      <Route path='/' exact component={Register}/>
+      <Route path='/login' component={Login}/>
       <Route path='/verify' component={Verify}/>
       <Route path='/forgot-password' component={ForgotPassword}/>
       <Route path='/change-password' component={ChangePassword}/>

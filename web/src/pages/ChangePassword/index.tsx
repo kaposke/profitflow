@@ -91,14 +91,14 @@ const ChangePassword: React.FC = () => {
                   <Button type='submit'>{t('changePassword')}</Button>
                 </form>
               </AppCard>
-              <p><Link to='/'>{t('cancelPasswordReset')}</Link></p>
+              <p><Link to='/login'>{t('cancelPasswordReset')}</Link></p>
             </>
           ) : (
               <>
                 <AppCard>
                   <Logo />
                   <p>{t('passwordChanged')}</p>
-                  <Link to='/'><Button>{t('backToLogin')}</Button></Link>
+                  <Link to='/login'><Button>{t('backToLogin')}</Button></Link>
                 </AppCard>
               </>
             )

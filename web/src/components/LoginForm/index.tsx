@@ -8,11 +8,10 @@ import { Trans, useTranslation } from 'react-i18next'
 
 import { Container, Form, FormContainer, ErrorMessage } from './styles';
 import Button from '../../components/Button';
-import Logo from '../../components/Logo';
-import CenteredLayout from '../../layouts/CenteredLayout';
 import Input from '../../components/Input';
 import { useAuth } from '../../contexts/auth';
 import { tYup } from '../../utils/tYup';
+import Logo from '../Logo';
 
 interface FormData {
   email: string;
@@ -57,7 +56,7 @@ const LoginForm: React.FC = () => {
   return (
       <Container>
         <FormContainer>
-          {/* <Logo /> */}
+          <Logo />
           <h2>{t('signIn')}</h2>
 
           {invalidCredentials &&
@@ -91,7 +90,7 @@ const LoginForm: React.FC = () => {
           </Form>
 
         </FormContainer>
-        <Trans i18nKey='dontHaveAccount'><p>Don't have an acount? <Link to='/register'>Sign Up</Link></p></Trans>
+        <Trans i18nKey='dontHaveAccount'><p>Don't have an acount? <Link to='/'>Sign Up</Link></p></Trans>
       </Container>
   );
 }
