@@ -18,7 +18,7 @@ const mailConfig: MailConfig = {
   | a mailer
   |
   */
-  mailer: 'smtp',
+  mailer: 'ses',
 
   /*
   |--------------------------------------------------------------------------
