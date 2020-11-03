@@ -6,7 +6,7 @@ import App from './App';
 
 require('dotenv').config();
 
-console.log(process.env)
+// console.log(process.env)
 
 ReactDOM.render(
   <React.StrictMode>
