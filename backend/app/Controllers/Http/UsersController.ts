@@ -52,7 +52,7 @@ export default class UsersController {
 
     Mail.sendLater(message => {
       message
-        .from(Env.get('MAIL_FROM') as string)
+        .from(`ProfitFlow <${Env.get('MAIL_FROM')}>`)
         .to(user.email)
         .subject('[ProfitFlow] Forgot my password')
         .htmlView('emails/change-password.edge', { user, url });

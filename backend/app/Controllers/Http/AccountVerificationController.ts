@@ -16,7 +16,7 @@ export default class AccountVerificationController {
 
     Mail.sendLater(message => {
       message
-        .from(`${Env.get('MAIL_FROM')}`)
+        .from(`ProfitFlow <${Env.get('MAIL_FROM')}>`)
         .to(user.email)
         .subject(`Welcome to ProfitFlow, ${user.username}! Confirm your account.`)
         .htmlView('emails/welcome', { user, url });
