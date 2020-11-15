@@ -113,7 +113,14 @@ const TradeList: React.FC = () => {
   async function onDeleteConfirmation() {
     setDeleteConfirmation(false);
     await tradeService.delete(deletingAttemptId);
-    const days = tradeDays.map(day => ({ ...day, trades: day.trades.filter(trade => trade.id !== deletingAttemptId) }))
+    const days = tradeDays;
+    const day = days.find(d => d.trades.find(t => t.id === deletingAttemptId));
+    if (!day) return;
+
+    day.trades = day.trades.filter(t => t.id !== deletingAttemptId);
+    day.totalProfit = day.trades.map(t => t.profit).reduce((total, profit) => total += profit);
+
+    // const days = tradeDays.map(day => ({ ...day, trades: day.trades.filter(trade => trade.id !== deletingAttemptId) }))
     setTradeDays(days.filter(day => day.trades.length > 0));
 
     toast.error(t('tradeDeleted'));
