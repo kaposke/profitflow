@@ -1,4 +1,6 @@
 {
+ "loading": "Carregando...",
+
   "landingSubtitle": "O seu diário de trades",
   "landingDescription": "Acompanhe as suas operações e desempenho por um só lugar.",
 
@@ -21,6 +23,8 @@
   "welcomeUser": "Bem vindo ao ProfitFlow, {{username}}!",
   "accountNotVerified": "Sua conta ainda não foi verificada. Por favor, clique no link de ativação que enviamos para <0>{{email}}</0>",
   "logOut": "Sair",
+
+  "verifyingAccount": "Verificando conta...",
 
   "passwordResetDescription": "Coloque seu e-mail para que possamos lhe enviar um link de alteração de senha.",
   "sendPasswordReset": "Enviar e-mail de alteração",

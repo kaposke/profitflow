@@ -1,15 +1,18 @@
 import React, { useContext, useEffect } from 'react';
 import { ThemeContext } from 'styled-components'
 import { useHistory, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { SpiralSpinner } from 'react-spinners-kit'
+
 import AppCard from '../../components/AppCard';
 import Logo from '../../components/Logo';
 import { useAuth } from '../../contexts/auth';
 import VerificationService from '../../services/account-verification.service'
-import { SpiralSpinner } from 'react-spinners-kit'
 
 import { Container } from './styles';
 
 const Verify: React.FC = () => {
+  const { t } = useTranslation();
   const history = useHistory();
   const { saveAuthCredentials } = useAuth();
   const themeContext = useContext(ThemeContext);
@@ -36,7 +39,7 @@ const Verify: React.FC = () => {
       <AppCard>
         <Logo />
         <div className="content">
-          <p>Verifying account...</p>
+          <p>{t('verifyingAccount')}</p>
           <SpiralSpinner backColor={themeContext.colors.green} frontColor={themeContext.colors.red} />
         </div>
       </AppCard>

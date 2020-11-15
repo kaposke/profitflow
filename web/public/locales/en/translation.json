@@ -1,4 +1,6 @@
 {
+  "loading": "Loading...",
+
   "landingSubtitle": "Your trading diary",
   "landingDescription": "Keep track of all your trades and profits in only one place.",
 
@@ -20,6 +22,8 @@
   "welcomeUser": "Welcome to ProfitFlow, {{username}}!",
   "accountNotVerified": "Your account is not yet verified. Please, click the activation link we sent to <0>{{email}}</0>",
   "logOut": "Log out",
+
+  "verifyingAccount": "Verifying account...",
 
   "passwordResetDescription": "Enter your e-mail so that we can send you a password reset link.",
   "sendPasswordReset": "Send password reset email",
