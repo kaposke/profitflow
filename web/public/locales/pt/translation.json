@@ -8,10 +8,12 @@
   "forgotPassword": "Esqueci minha senha",
   "dontHaveAccount": "<0>Não tem uma conta? <1 to='/'>Crie uma!</1></0>",
   "emailPasswordDoesNotMatch": "E-mail e senha não coincidem",
+  "loggingIn": "Entrando",
 
   "registerTitle": "Comece a usar de graça",
   "username": "Nome de usuário",
   "signUp": "Criar conta",
+  "creatingAccount": "Criando conta",
   "haveAccount": "<0>Já tem uma conta? <1 to='/login'>Entrar</1></0>",
 
   
@@ -52,6 +54,7 @@
   "description": "Descrição",
   "dateTime": "Data e hora",
   "save": "Salvar",
+  "saving": "Salvando",
   
   "noDescription": "Nenhuma descrição disponível.",
 

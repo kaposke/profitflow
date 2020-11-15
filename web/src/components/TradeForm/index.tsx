@@ -10,22 +10,25 @@ import Button from '../Button';
 import Trade from '../../models/Trade';
 import Input from '../Input';
 import { useTranslation } from 'react-i18next';
+import { tYup } from '../../utils/tYup';
 
-const schema = yup.object().shape({
-  product: yup.string().required().label('Product'),
-  profit: yup.number().required().label('Profit'),
-  description: yup.string().optional(),
-  date_time: yup.date().required(),
-});
 
 interface Props {
   trade?: Trade;
-  onSubmit(formData: Trade): void;
+  onSubmit(formData: Trade): Promise<void>;
 }
 
 const TradeForm: React.FC<Props> = ({ onSubmit, trade }) => {
   const { t } = useTranslation();
   const [action, setAction] = useState<string>(trade ? trade.action : '');
+  const [saving, setSaving] = useState<boolean>(false);
+
+  const schema = yup.object().shape({
+    product: yup.string().required().label(t('product')),
+    profit: yup.number().required().label(t('profitLoss')),
+    description: yup.string().optional(),
+    date_time: yup.date().required(),
+  });
 
   const { register, handleSubmit, control, errors, setError, clearErrors } = useForm<Trade>({
     resolver: yupResolver(schema),
@@ -42,11 +45,15 @@ const TradeForm: React.FC<Props> = ({ onSubmit, trade }) => {
     clearErrors('action');
   }
 
-  function submit(formData: Trade) {
-    if (action === '')
+  async function submit(formData: Trade) {
+    if (action === '') {
       setError('action', { type: 'manual', message: t('noActionSelected') });
+      return;
+    }
 
-    onSubmit({ ...formData, action });
+    setSaving(true);
+    await onSubmit({ ...formData, action });
+    setSaving(false);
   }
 
   return (
@@ -66,7 +73,7 @@ const TradeForm: React.FC<Props> = ({ onSubmit, trade }) => {
                 name='product'
                 type="text"
                 ref={register}
-                error={errors.product?.message}
+                error={tYup(errors.product?.message)}
               />
             </div>
 
@@ -76,7 +83,7 @@ const TradeForm: React.FC<Props> = ({ onSubmit, trade }) => {
                 name='profit'
                 type="number"
                 ref={register}
-                error={errors.profit?.message}
+                error={tYup(errors.profit?.message)}
                 defaultValue={0}
               />
             </div>
@@ -108,7 +115,7 @@ const TradeForm: React.FC<Props> = ({ onSubmit, trade }) => {
             />
           </div>
 
-          <Button type='submit'>{t('save')}</Button>
+          <Button type='submit' loading={saving} loadingMessage={t('saving')}>{t('save')}</Button>
         </Form>
       </Container>
     </AppCard>

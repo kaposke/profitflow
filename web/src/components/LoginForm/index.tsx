@@ -23,6 +23,8 @@ const LoginForm: React.FC = () => {
 
   const { signIn } = useAuth();
 
+  const [loading, setLoading] = useState<boolean>(false);
+
   const schema = yup.object().shape({
     email: yup.string().email().required().label('E-mail'),
     password: yup.string().required().label(i18n.t('password')),
@@ -32,6 +34,7 @@ const LoginForm: React.FC = () => {
   const [invalidCredentials, setInvalidCredentials] = useState<boolean>(false);
 
   async function submit({ email, password }: FormData) {
+    setLoading(true);
     try {
       await signIn(email, password);
     } catch ({ response }) {
@@ -49,6 +52,8 @@ const LoginForm: React.FC = () => {
           setError(field, { type: 'manual', message });
         });
       }
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -86,7 +91,7 @@ const LoginForm: React.FC = () => {
               <p style={{ textAlign: 'end', marginTop: '0.5rem' }}>
               <Link to='/forgot-password'>{t('forgotPassword')}</Link></p>
             </div>
-            <Button type='submit' icon={(<FiLogIn />)}>{t('signIn')}</Button>
+            <Button type='submit' icon={(<FiLogIn />)} loading={loading} loadingMessage={t('loggingIn')}>{t('signIn')}</Button>
           </Form>
 
         </FormContainer>

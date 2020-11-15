@@ -8,10 +8,12 @@
   "forgotPassword": "Forgot my password",
   "dontHaveAccount": "<0>Don't have an acount? <1 to='/'>Sign Up</1></0>",
   "emailPasswordDoesNotMatch": "E-mail and password do not match.",
+  "loggingIn": "Logging In",
 
   "registerTitle": "Create your account for free",
   "username": "Username",
   "signUp": "Sign Up",
+  "creatingAccount": "Creating account",
   "haveAccount": "<0>Already registered? <1 to='/login'>Sign In</1></0>",
 
   "signingOut": "Signing Out...",
@@ -51,6 +53,7 @@
   "description": "Description",
   "dateTime": "Date and time",
   "save": "Save",
+  "saving": "Saving",
 
   "noDescription": "No description available.",
 

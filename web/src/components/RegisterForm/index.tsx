@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import * as yup from "yup";
 import { yupResolver } from '@hookform/resolvers';
 
@@ -27,6 +27,8 @@ const RegisterForm: React.FC = () => {
 
   const { signIn } = useAuth();
 
+  const [loading, setLoading] = useState<boolean>(false);
+
   const schema = yup.object().shape({
     username: yup.string().required().label(t('username')),
     email: yup.string().email().required().label('E-mail'),
@@ -36,19 +38,23 @@ const RegisterForm: React.FC = () => {
 
   const { register, handleSubmit, errors, setError } = useForm<FormData>({ resolver: yupResolver(schema) });
 
-  function submit(formData: FormData) {
-    userService.create(formData)
-      .then(response => {
-        signIn(formData.email, formData.password);
-      })
-      .catch(({ response }) => {
-        if (!response) return;
-        const { errors } = response.data;
+  async function submit(formData: FormData) {
+    setLoading(true);
+    try {
+      await userService.create(formData);
 
-        errors.forEach(({ field, message }: { field: any, message: string }) => {
-          setError(field, { type: 'manual', message });
-        });
+      signIn(formData.email, formData.password);
+    } catch ({ response }) {
+      if (!response) return;
+      const { errors } = response.data;
+
+      errors.forEach(({ field, message }: { field: any, message: string }) => {
+        setError(field, { type: 'manual', message });
       });
+    }
+    finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -97,7 +103,7 @@ const RegisterForm: React.FC = () => {
               error={tYup(errors.password_confirmation?.message, { context: 'f' })}
             />
           </div>
-          <Button>{t('signUp')}</Button>
+          <Button loading={loading} loadingMessage={t('creatingAccount')}>{t('signUp')}</Button>
         </Form>
       </FormContainer>
       <Trans i18nKey='haveAccount'><p>Already registered? <Link to='/login'>Sign In</Link></p></Trans>

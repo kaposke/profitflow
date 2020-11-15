@@ -79,30 +79,30 @@ const TradeList: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 
-  function handleFormSubmit(trade: Trade) {
-    tradeService.create(trade).then(response => {
-      const date = DateTime.fromJSDate(trade.date_time).toISODate();
+  async function handleFormSubmit(trade: Trade) {
+    const response = await tradeService.create(trade);
+    
+    const date = DateTime.fromJSDate(trade.date_time).toISODate();
 
-      const dayToInsert = tradeDays.find(day => day.date === date);
-      let newDayList: Day[];
-      if (dayToInsert) {
-        newDayList = tradeDays.map(day =>
-          day === dayToInsert ?
-            {
-              ...day,
-              trades: [{ ...response.data, date_time: trade.date_time }, ...day.trades],
-              totalProfit: day.totalProfit + trade.profit,
-            }
-            :
-            day
-        );
-      } else {
-        newDayList = [{ date: date!, trades: [{ ...response.data, date_time: trade.date_time }], totalProfit: trade.profit }, ...tradeDays];
-      }
+    const dayToInsert = tradeDays.find(day => day.date === date);
+    let newDayList: Day[];
+    if (dayToInsert) {
+      newDayList = tradeDays.map(day =>
+        day === dayToInsert ?
+          {
+            ...day,
+            trades: [{ ...response.data, date_time: trade.date_time }, ...day.trades],
+            totalProfit: day.totalProfit + trade.profit,
+          }
+          :
+          day
+      );
+    } else {
+      newDayList = [{ date: date!, trades: [{ ...response.data, date_time: trade.date_time }], totalProfit: trade.profit }, ...tradeDays];
+    }
 
-      setTradeDays(newDayList.sort((a, b) => Number(new Date(b.date)) - Number(new Date(a.date))));
-      setShowForm(false);
-    });
+    setTradeDays(newDayList.sort((a, b) => Number(new Date(b.date)) - Number(new Date(a.date))));
+    setShowForm(false);
   }
 
   function onClickDelete(id: number) {
