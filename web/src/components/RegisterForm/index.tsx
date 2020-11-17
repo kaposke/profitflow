@@ -104,6 +104,7 @@ const RegisterForm: React.FC = () => {
             />
           </div>
           <Button loading={loading} loadingMessage={t('creatingAccount')}>{t('signUp')}</Button>
+          <Trans i18nKey='agreeToPrivacyPolicy'><p>By clicking on \"Sign Up\" you agree to our <Link to='/privacy-policy'>Privacy Policy</Link>.</p></Trans>
         </Form>
       </FormContainer>
       <Trans i18nKey='haveAccount'><p>Already registered? <Link to='/login'>Sign In</Link></p></Trans>

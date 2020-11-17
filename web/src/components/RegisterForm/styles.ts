@@ -35,6 +35,10 @@ export const FormContainer = styled.div`
   button {
     width: 100%;
   }
+
+  p {
+    text-align: left;
+  }
 `;
 
 export const Form = styled.form`

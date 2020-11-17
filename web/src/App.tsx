@@ -8,6 +8,7 @@ import { ThemeContextProvider } from './contexts/theme';
 import { GlobalStyle } from './styles/global';
 import { AuthProvider } from './contexts/auth';
 import Routes from './routes';
+import CookieConsentStyled from './components/CookieConsentStyled';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <GlobalStyle />
         <AuthProvider>
           <Routes />
+          <CookieConsentStyled />
         </AuthProvider>
 
       </ModalProvider>
