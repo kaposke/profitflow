@@ -64,6 +64,9 @@
   
   "noDescription": "Nenhuma descrição disponível.",
 
+  "cookieWarning": "Este site usa cookies para melhorar a sua experiência",
+  "cookieConsentButton": "Entendi!",
+
   "yup": {
     "default": "{{label}} inválido",
     "default_f": "{{label}} inválida",

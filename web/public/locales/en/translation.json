@@ -64,6 +64,9 @@
 
   "noDescription": "No description available.",
 
+  "cookieWarning": "This website uses cookies to enhance your experience.",
+  "cookieConsentButton": "Understood!",
+
   "yup": {
     "default": "{{label}} is invalid",
     "required": "{{label}} is required",
