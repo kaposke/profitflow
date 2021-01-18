@@ -73,6 +73,7 @@ const TradeForm: React.FC<Props> = ({ onSubmit, trade }) => {
                 name='product'
                 type="text"
                 ref={register}
+                maxLength={10}
                 error={tYup(errors.product?.message)}
               />
             </div>

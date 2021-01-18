@@ -38,5 +38,7 @@ export default class TradeStoreValidator {
    *   'scores.*.number': 'Define scores as valid numbers'
    * }
   */
-  public messages = {};
+  public messages = {
+    'product.maxLength': 'O ativo não pode ter mais de 10 caracteres.'
+  };
 }

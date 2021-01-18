@@ -11,7 +11,7 @@ const Input = React.forwardRef<HTMLInputElement, Props>(({ children, icon, error
   return (
     <Container icon={!!icon} error={!!error}>
       <div>
-        <input {...inputProps} ref={ref} />
+        <input {...inputProps} ref={ref}/>
         {icon}
       </div>
       <span>{error}</span>
