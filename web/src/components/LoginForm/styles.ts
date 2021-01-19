@@ -4,13 +4,17 @@ import { FadeInFromBelow } from '../../styles/animations';
 
 export const Container = styled.div`
   width: 100%;
-  max-width: 44rem;
+  max-width: 50rem;
 
   animation: ${FadeInFromBelow} 0.5s ease-out;
 
   p {
     margin-top: 1rem;
     text-align: center;
+  }
+
+  @media(min-width: 1024px) {
+    max-width: 40rem;
   }
 `;
 

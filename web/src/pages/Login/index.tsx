@@ -1,12 +1,12 @@
 import React from 'react';
-import CenteredLayout from '../../layouts/CenteredLayout';
+import { Container } from './styles'
 import LoginForm from '../../components/LoginForm';
 
 const Login: React.FC = () => {
   return (
-    <CenteredLayout>
-        <LoginForm />
-    </CenteredLayout>
+    <Container>
+      <LoginForm />
+    </Container>
   );
 }
 
