@@ -1,6 +1,18 @@
 import styled from 'styled-components';
+import CenteredLayout from '../../layouts/CenteredLayout';
+
 
 export const Container = styled.div`
+  width: 100%;
+  background: ${props => props.theme.colors.backgroundInverted};
+`;
+
+export const HeaderContainer = styled(CenteredLayout)`
+  background: ${props => props.theme.colors.background};
+  box-shadow: ${props => props.theme.boxShadow};
+`;
+
+export const HeaderContent = styled.div`
   position: relative;
   width: 100%;
   max-width: 120rem;
@@ -45,6 +57,7 @@ export const Container = styled.div`
 
   @media(min-width: 1024px) {
     display: grid;
+    height: 100vh;
     grid-template-columns: 1fr 1fr;
     grid-column-gap: 2rem;
     .register { 
@@ -58,8 +71,7 @@ export const Container = styled.div`
   }
 `;
 
-
-export const LandingContent = styled.div`
+export const HeaderInfo = styled.div`
   .logo {
       font-size: 5rem;
       margin-bottom: 0;
@@ -103,5 +115,36 @@ export const LandingContent = styled.div`
       font-size: 1.8rem;
       text-align: left;
     }
+  }
+`;
+
+
+export const BodyContent = styled.div`
+  margin: 3rem 0 5rem;
+  width: 100%;
+  padding: 2rem;
+  color: ${props => props.theme.colors.textFaintInverted};
+
+  h3 {
+    color: ${props => props.theme.colors.textLight};
+    font-size: 4rem;
+  }
+
+  p {
+    margin-top: 2rem;
+  }
+
+  ul {
+    margin-left: 2rem;
+  }
+
+  .disclaimer {
+    margin-top: 6rem;
+    color: ${props => props.theme.colors.textFaint};
+  }
+
+  @media(min-width: 1024px) {
+    max-width: 120rem;
+    font-size: 1.7rem;
   }
 `;

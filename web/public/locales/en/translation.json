@@ -1,8 +1,17 @@
 {
   "loading": "Loading...",
 
-  "landingSubtitle": "Your trading diary",
+  "landingSubtitle": "The Trader's Diary",
   "landingDescription": "Keep track of all your trades and profits in only one place.",
+  
+  "landingBodyTitle": "New around here? Meet <0>Profit</0><1>Flow</1>, the Trader's Diary.",
+  "landingBodyDescription": "<0>Profit</0><1>Flow</1> is a tool created for traders, by a trader. The goal? To throw away your old excell sheet and replace it with a modern tool.",
+  "landingBodyListDescription": "Why should you use <0>Profit</0><1>Flow</1>? Here are a few reasons:",
+  "landingBodyListItem1": "Have greater control over your trades.",
+  "landingBodyListItem2": "Compare your day to day performance.",
+  "landingBodyListItem3": "Take note of your trading reasons in your trade's description and understand what you might be doing right or wrong.",
+  "landingBodyListItem4": "Access all of that in a computer or phone anywhere around the world!",
+  "landingBodyDisclaimer": "<0>Profit</0><1>Flow</1> is a free service and will keep receiving more functionalities. <2>Create your account and try it out</2>.",
 
   "signIn": "Sign In",
   "password": "Password",

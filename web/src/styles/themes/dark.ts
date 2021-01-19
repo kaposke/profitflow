@@ -1,9 +1,12 @@
 export default {
   colors: {
     background: '#202225',
+    backgroundInverted: '#F2F3F5',
     card: '#2F3136',
+    cardInverted: '#FFFFFF',
     text: '#FAFAFA',
     textFaint: '#B0B2B6',
+    textFaintInverted: '#7f848a',
     textLight: '#FAFAFA',
     textDark: '#4B4B4C',
     textInverted: '#4B4B4C',

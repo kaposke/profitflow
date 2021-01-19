@@ -1,8 +1,17 @@
 {
  "loading": "Carregando...",
 
-  "landingSubtitle": "O seu diário de trades",
+  "landingSubtitle": "O Diário do Trader",
   "landingDescription": "Acompanhe as suas operações e desempenho por um só lugar.",
+
+  "landingBodyTitle": "Novo por aqui? Conheça o <0>Profit</0><1>Flow</1>, o Diário do Trader.",
+  "landingBodyDescription": "O <0>Profit</0><1>Flow</1> é uma ferramenta desenvolvida por um trader, para traders. O objetivo? Descartar essa sua planilha do século passado e colocar em suas mãos o que há de mais moderno.",
+  "landingBodyListDescription": "Pra que você usaria o <0>Profit</0><1>Flow</1>? Aqui estão alguns motivos:",
+  "landingBodyListItem1": "Tenha mais controle sobre seus trades.",
+  "landingBodyListItem2": "Compare o seu desempenho no dia a dia.",
+  "landingBodyListItem3": "Anote as razões das suas operações na descrição do trade e entenda onde está acertando e errando.",
+  "landingBodyListItem4": "Acesse tudo isso de um computador ou celular em qualquer lugar no mundo!",
+  "landingBodyDisclaimer": "<0>Profit</0><1>Flow</1> é um serviço gratuito e terá cada vez mais funcionalidades. <2>Crie sua conta e experimente</2>.",
 
   "signIn": "Entrar",
   "password": "Senha",
