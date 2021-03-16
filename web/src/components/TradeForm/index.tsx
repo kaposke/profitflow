@@ -32,7 +32,7 @@ const TradeForm: React.FC<Props> = ({ onSubmit, trade }) => {
 
   const { register, handleSubmit, control, errors, setError, clearErrors } = useForm<Trade>({
     resolver: yupResolver(schema),
-    defaultValues: trade ? { ...trade } : { date_time: new Date() }
+    defaultValues: trade ? { ...trade } : { date_time: new Date().toISOString() }
   });
 
   function selectBuy() {

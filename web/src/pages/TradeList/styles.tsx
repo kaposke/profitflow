@@ -27,29 +27,44 @@ export const Header = styled.header`
 `;
 
 export const Trades = styled.div`
-  .day-card {
+  padding-bottom: 3rem;
+  .month {
+    margin-bottom: 2rem; // month separation
+  }
+
+  .days {
+    padding-left: 2rem;
+
+    .day {
+      margin-top: 1rem; // day separation
+      
+      .trades {
+        padding-left: 2rem;
+
+        > * {
+          margin-top: 1rem;
+        }
+      }
+    }
+  }
+
+  .group-card {
     display: flex;
+    flex-direction: horizontal;
     align-items: center;
     justify-content: space-between;
 
-    span {
-      text-transform: capitalize;
-    }
-
-    .profit {
-      font-size: 2rem;
-      font-weight: bold;
-    }
+    font-size: 1.8rem;
   }
 
-  .trade-day {
-    > * {
-      margin-bottom: 1rem;
-    }
+  .trade-count {
+    margin-right: 2rem;
+    font-size: 1.5rem;
   }
 
-  > * {
-    margin-bottom: 2rem;
+  .profit {
+    font-weight: bold;
+    font-size: 2rem;
   }
 `;
 

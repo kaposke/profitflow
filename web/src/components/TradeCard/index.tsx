@@ -54,7 +54,7 @@ const TradeCard: React.FC<Props> = ({ trade: tradeInfo, onClickDelete }) => {
           </div>
           <div className='product'>
             <h1>{trade.product}</h1>
-            <span>{DateTime.fromJSDate(trade.date_time).toLocaleString(DateTime.TIME_SIMPLE)}</span>
+            <span>{DateTime.fromISO(trade.date_time).toLocaleString(DateTime.TIME_SIMPLE)}</span>
           </div>
           {trade.profit > 0 ?
             <span className="profit green">+{t('currencySymbol')}{trade.profit}</span>

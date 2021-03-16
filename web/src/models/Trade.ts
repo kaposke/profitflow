@@ -4,7 +4,7 @@ interface Trade {
   product: string;
   profit: number;
   description: string;
-  date_time: Date,
+  date_time: string,
 }
 
 export default Trade;

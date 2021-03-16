@@ -17,11 +17,30 @@ import { useTheme } from '../../contexts/theme';
 import tradeService from '../../services/trade.service';
 import Trade from '../../models/Trade';
 import { Trans, useTranslation } from 'react-i18next';
+import Capitalized from '../../components/Capitalized';
+
+interface Month {
+  date: string,
+  totalProfit: number,
+  tradeCount: number;
+}
 
 interface Day {
   date: string;
   totalProfit: number;
-  trades: Trade[];
+  tradeCount: number;
+}
+
+function sameMonth(iso1: string, iso2: string) {
+  const first = new Date(iso1);
+  const second = new Date(iso2);
+  return first.getUTCMonth() == second.getUTCMonth() && first.getUTCFullYear() == second.getUTCFullYear();
+}
+
+function sameDay(iso1: string, iso2: string) {
+  const first = new Date(iso1);
+  const second = new Date(iso2);
+  return first.getUTCDate() == second.getUTCDate();
 }
 
 const TradeList: React.FC = () => {
@@ -34,7 +53,11 @@ const TradeList: React.FC = () => {
   const [loadedAllTrades, setLoadedAllTrades] = useState<boolean>(false);
 
   const [showForm, setShowForm] = useState<boolean>(false);
-  const [tradeDays, setTradeDays] = useState<Day[]>([]);
+
+  const [months, setMonths] = useState<Month[]>([]);
+  const [days, setDays] = useState<Day[]>([]);
+  const [trades, setTrades] = useState<Trade[]>([]);
+
   const [deleteConfirmation, setDeleteConfirmation] = useState<boolean>(false);
   const [deletingAttemptId, setDeletingAttemptId] = useState<number>(0);
 
@@ -59,21 +82,11 @@ const TradeList: React.FC = () => {
         return;
       };
 
-      let days: Day[] = [...tradeDays];
-      const existingDates = days.map(day => day.date);
+      // Add only not yet existing month and days, and convert their dates to  Dates
+      setMonths([...months, ...data.months.filter((month: Month) => !months.map(m => m.date).includes(month.date))]);
+      setDays([...days, ...data.days.filter((day: Day) => !days.map(d => d.date).includes(day.date))]);
+      setTrades([...trades, ...data.trades]);
 
-      data.forEach((day: Day) => {
-        day.trades = day.trades.map(trade => ({ ...trade, date_time: new Date(trade.date_time) }));
-        const dayIndex = existingDates.findIndex(date => date === day.date);
-
-        if (dayIndex === -1) {
-          existingDates.push(day.date);
-          days.push(day);
-        } else
-          days[dayIndex].trades.push(...day.trades);
-      });
-
-      setTradeDays(days);
       setLoading(false);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -81,27 +94,11 @@ const TradeList: React.FC = () => {
 
   async function handleFormSubmit(trade: Trade) {
     const response = await tradeService.create(trade);
-    
-    const date = DateTime.fromJSDate(trade.date_time).toISODate();
 
-    const dayToInsert = tradeDays.find(day => day.date === date);
-    let newDayList: Day[];
-    if (dayToInsert) {
-      newDayList = tradeDays.map(day =>
-        day === dayToInsert ?
-          {
-            ...day,
-            trades: [{ ...response.data, date_time: trade.date_time }, ...day.trades],
-            totalProfit: day.totalProfit + trade.profit,
-          }
-          :
-          day
-      );
-    } else {
-      newDayList = [{ date: date!, trades: [{ ...response.data, date_time: trade.date_time }], totalProfit: trade.profit }, ...tradeDays];
-    }
+    const date = DateTime.fromISO(trade.date_time).toISODate();
 
-    setTradeDays(newDayList.sort((a, b) => Number(new Date(b.date)) - Number(new Date(a.date))));
+    // Add trade
+
     setShowForm(false);
   }
 
@@ -113,15 +110,15 @@ const TradeList: React.FC = () => {
   async function onDeleteConfirmation() {
     setDeleteConfirmation(false);
     await tradeService.delete(deletingAttemptId);
-    const days = tradeDays;
-    const day = days.find(d => d.trades.find(t => t.id === deletingAttemptId));
-    if (!day) return;
+    // const days = tradeDays;
+    // const day = days.find(d => d.trades.find(t => t.id === deletingAttemptId));
+    // if (!day) return;
 
-    day.trades = day.trades.filter(t => t.id !== deletingAttemptId);
-    day.totalProfit = day.trades.map(t => t.profit).reduce((total, profit) => total += profit);
+    // day.trades = day.trades.filter(t => t.id !== deletingAttemptId);
+    // day.totalProfit = day.trades.map(t => t.profit).reduce((total, profit) => total += profit);
 
-    // const days = tradeDays.map(day => ({ ...day, trades: day.trades.filter(trade => trade.id !== deletingAttemptId) }))
-    setTradeDays(days.filter(day => day.trades.length > 0));
+    // // const days = tradeDays.map(day => ({ ...day, trades: day.trades.filter(trade => trade.id !== deletingAttemptId) }))
+    // setTradeDays(days.filter(day => day.trades.length > 0));
 
     toast.error(t('tradeDeleted'));
   }
@@ -148,34 +145,64 @@ const TradeList: React.FC = () => {
           )}
 
         <Trades>
-          {tradeDays.length > 0 ? tradeDays.map((tradeDay, index) => (
-            <div key={index} className='trade-day'>
-              <AppCard className='day-card'>
-                <span>
-                  {DateTime.fromISO(tradeDay.date).toLocaleString({ weekday: 'long', month: 'long', day: '2-digit' })} ({DateTime.fromISO(tradeDay.date).toRelativeCalendar()})
-                </span>
-                {tradeDay.totalProfit > 0 ?
-                  <span className='profit green'>+{t('currencySymbol')}{tradeDay.totalProfit}</span>
-                  : tradeDay.totalProfit < 0 ?
-                    <span className='profit red'>-{t('currencySymbol')}{Math.abs(tradeDay.totalProfit)}</span>
-                    :
-                    <span className='profit'>{t('currencySymbol')}{Math.abs(tradeDay.totalProfit)}</span>
-                }
-              </AppCard>
-              {
-                tradeDay.trades.map(trade => (
-                  <TradeCard key={trade.id} trade={trade} onClickDelete={onClickDelete} />
-                ))
-              }
-            </div>
-          ))
-            : !showForm &&
-            <NoTradesContainer>
-              <FiArrowUp />
-              <Trans i18nKey='noTrades'>
-                <p> <br /><span className='green'> </span></p>
-              </Trans>
-            </NoTradesContainer>
+          {
+            months.length > 0 ? months.map((month, index) => (
+              <div key={index} className='month'>
+                <AppCard className='group-card'>
+                  <Capitalized>{DateTime.fromISO(month.date).toLocaleString({ month: 'long', year: 'numeric' })}</Capitalized>
+                  <div>
+                    <span className='trade-count'>{month.tradeCount} {month.tradeCount > 1 ? 'trades' : 'trade'}</span>
+                    {
+                      month.totalProfit > 0 ?
+                        <span className='profit green'>+{t('currencySymbol')}{month.totalProfit}</span>
+                        : month.totalProfit < 0 ?
+                          <span className='profit red'>-{t('currencySymbol')}{Math.abs(month.totalProfit)}</span>
+                          :
+                          <span className='profit'>{t('currencySymbol')}{Math.abs(month.totalProfit)}</span>
+                    }
+                  </div>
+                </AppCard>
+
+                <div className='days'>
+                  {
+                    days.filter(day => sameMonth(day.date, month.date)).map((day, index) => (
+                      <div key={index} className='day'>
+                        <AppCard className='group-card'>
+                          {/* <span>{day.date}</span> */}
+                          <Capitalized>{DateTime.fromISO(day.date).toLocaleString({ weekday: 'long', day: '2-digit' })}</Capitalized>
+                          <div>
+                            <span className='trade-count'>{day.tradeCount} {day.tradeCount > 1 ? 'trades' : 'trade'}</span>
+                            {
+                              day.totalProfit > 0 ?
+                                <span className='profit green'>+{t('currencySymbol')}{day.totalProfit}</span>
+                                : day.totalProfit < 0 ?
+                                  <span className='profit red'>-{t('currencySymbol')}{Math.abs(day.totalProfit)}</span>
+                                  :
+                                  <span className='profit'>{t('currencySymbol')}{Math.abs(day.totalProfit)}</span>
+                            }
+                          </div>
+                        </AppCard>
+
+                        <div className="trades">
+                          {
+                            trades.filter(trade => sameDay(trade.date_time, day.date)).map((trade) => (
+                              <TradeCard key={trade.id} trade={trade} />
+                            ))
+                          }
+                        </div>
+                      </div>
+                    ))
+                  }
+                </div>
+              </div>
+            ))
+              : !showForm &&
+              <NoTradesContainer>
+                <FiArrowUp />
+                <Trans i18nKey='noTrades'>
+                  <p> <br /><span className='green'> </span></p>
+                </Trans>
+              </NoTradesContainer>
           }
         </Trades>
 

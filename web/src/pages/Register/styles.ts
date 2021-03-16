@@ -126,7 +126,7 @@ export const BodyContent = styled.div`
   color: ${props => props.theme.colors.textFaintInverted};
 
   h3 {
-    color: ${props => props.theme.colors.textLight};
+    color: ${props => props.theme.colors.textInverted};
     font-size: 4rem;
   }
 
